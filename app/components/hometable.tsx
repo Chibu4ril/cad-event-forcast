@@ -1,3 +1,5 @@
+"use client";
+
 import { Dropdown, Table } from "flowbite-react";
 import { Ellipsis, Trash2 } from "lucide-react";
 import React from "react";
@@ -8,22 +10,22 @@ const HomeTable = () => {
   const [isClient, setIsClient] = useState(false);
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
 
-  useEffect(() => {
-    setIsClient(true);
-    const getFiles = async () => {
-      const uploadedFiles = await fetchUploadedFiles();
-      setFiles(uploadedFiles);
-    };
+  // useEffect(() => {
+  //   setIsClient(true);
+  //   const getFiles = async () => {
+  //     const uploadedFiles = await fetchUploadedFiles();
+  //     setFiles(uploadedFiles);
+  //   };
 
-    getFiles();
-  }, []);
-  if (!isClient) return null;
+  //   getFiles();
+  // }, []);
+  // if (!isClient) return null;
 
   return (
     <div>
       <Table hoverable>
         <Table.Head>
-          <Table.HeadCell col-span-2>File name</Table.HeadCell>
+          <Table.HeadCell className="col-span-2">File name</Table.HeadCell>
           <Table.HeadCell></Table.HeadCell>
           <Table.HeadCell></Table.HeadCell>
           <Table.HeadCell>Action</Table.HeadCell>
@@ -67,9 +69,9 @@ const HomeTable = () => {
               </Table.Row>
             ))
           ) : (
-            <div className="flex justify-center items-center w-full">
-              <p className=" w-full py-4">No files found</p>
-            </div>
+            <tr className="flex justify-center items-center w-full">
+              <td className=" w-full py-4">No files found</td>
+            </tr>
           )}
         </Table.Body>
       </Table>

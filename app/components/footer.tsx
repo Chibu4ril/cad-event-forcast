@@ -1,8 +1,13 @@
 "use client";
 
 import { Footer } from "flowbite-react";
+import { useEffect, useState } from "react";
 
 export function FooterBar() {
+  const [year, setYear] = useState();
+
+  useEffect(() => {}, []);
+
   return (
     <div className="bg-gray-100">
       <Footer

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Card } from "flowbite-react";
 import { ChevronRight, Download, DownloadCloud, SheetIcon } from "lucide-react";
 import React from "react";

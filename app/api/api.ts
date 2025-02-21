@@ -1,3 +1,5 @@
+"use client";
+
 export const fetchUploadedFiles = async () => {
   try {
     const response = await fetch("http://localhost:8000/api/files");

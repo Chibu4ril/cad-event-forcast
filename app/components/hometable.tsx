@@ -1,7 +1,7 @@
 "use client";
 
-import { Dropdown, Table } from "flowbite-react";
-import { Ellipsis, Trash2 } from "lucide-react";
+import { Table } from "flowbite-react";
+import { Trash2 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { deletedUploadedFiles, fetchUploadedFiles } from "../api/api";

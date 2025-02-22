@@ -7,7 +7,7 @@ const supabase = createBrowserClient(
 );
 
 export const handleFileChange = async (file: File, fileName: string) => {
-  const { data, error } = await supabase.storage
+  const { error } = await supabase.storage
     .from("uploads")
     .upload(`${fileName}`, file, { upsert: true });
 

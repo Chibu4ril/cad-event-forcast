@@ -1,7 +1,7 @@
 "use client";
 import { NavigationBar } from "./components/navbar";
 import { FooterBar } from "./components/footer";
-import { Dropdown, HR } from "flowbite-react";
+import { HR } from "flowbite-react";
 import HomeUpload from "./components/main";
 import HomeTable from "./components/hometable";
 import { InfoCard } from "./components/info";

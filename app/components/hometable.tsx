@@ -3,12 +3,12 @@
 import { Dropdown, Table } from "flowbite-react";
 import { Ellipsis, Trash2 } from "lucide-react";
 import React from "react";
-import { useEffect, useState } from "react";
-import { fetchUploadedFiles } from "../api/api";
+import { useState } from "react";
+// import { fetchUploadedFiles } from "../api/api";
 
 const HomeTable = () => {
-  const [isClient, setIsClient] = useState(false);
-  const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
+  // const [isClient, setIsClient] = useState(false);
+  const [files] = useState<{ name: string; url: string }[]>([]);
 
   // useEffect(() => {
   //   setIsClient(true);

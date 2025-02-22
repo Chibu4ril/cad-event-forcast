@@ -2,9 +2,9 @@
 
 import { Alert, Button, Card, FileInput, Label } from "flowbite-react";
 import { handleFileChange } from "../actions";
-import { useEffect, useState } from "react";
-import { FileSpreadsheet, Frown, Smile, ThumbsUp, X } from "lucide-react";
-import { fetchUploadedFiles } from "../api/api";
+import { useState } from "react";
+import { FileSpreadsheet, Frown, Smile, X } from "lucide-react";
+// import { fetchUploadedFiles } from "../api/api";
 
 export function UploadCard() {
   const [uploading, setUploading] = useState(false);
@@ -40,7 +40,7 @@ export function UploadCard() {
 
     setUploading(true);
     const fileName = `${selectedFile.name}`;
-    const { filePath, error } = await handleFileChange(selectedFile, fileName);
+    const { error } = await handleFileChange(selectedFile, fileName);
 
     if (error) {
       setUploadStatus({

@@ -47,29 +47,25 @@ const HomeTable = () => {
                 <Table.Cell className="truncate">{file.url}</Table.Cell>
 
                 <Table.Cell>
-                  <a
-                    href="#"
+                  <Dropdown
+                    label=""
+                    dismissOnClick={false}
+                    placement="right"
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                    renderTrigger={() => (
+                      <span>
+                        <Ellipsis />
+                      </span>
+                    )}
                   >
-                    <Dropdown
-                      label=""
-                      dismissOnClick={false}
-                      placement="right"
-                      renderTrigger={() => (
-                        <span>
-                          <Ellipsis />
-                        </span>
-                      )}
+                    <Dropdown.Item
+                      className="hover:text-red-600 py-0"
+                      onClick={() => deleteFile(file.url)}
                     >
-                      <Dropdown.Item
-                        className="hover:text-red-600 py-0"
-                        onClick={() => deleteFile(file.url)}
-                      >
-                        <Trash2 size={14} />
-                        <span className="ml-1 cursor-pointer">Delete</span>
-                      </Dropdown.Item>
-                    </Dropdown>
-                  </a>
+                      <Trash2 size={14} />
+                      <span className="ml-1 cursor-pointer">Delete</span>
+                    </Dropdown.Item>
+                  </Dropdown>
                 </Table.Cell>
               </Table.Row>
             ))

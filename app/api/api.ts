@@ -22,12 +22,13 @@ export const deletedUploadedFiles = async (fileUrl: string) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ url: fileUrl }),
+        body: JSON.stringify({ fileUrl }),
       }
     );
     if (!response.ok) {
       throw new Error(`Failed to delete file: ${response.statusText}`);
     }
+
     return { success: true, message: "File deleted successfully" };
   } catch (error) {
     console.error("Error deleting file:", error);

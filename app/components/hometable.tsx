@@ -2,32 +2,35 @@
 
 import { Dropdown, Table } from "flowbite-react";
 import { Ellipsis, Trash2 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-// import { fetchUploadedFiles } from "../api/api";
+import { deletedUploadedFiles, fetchUploadedFiles } from "../api/api";
 
 const HomeTable = () => {
-  // const [isClient, setIsClient] = useState(false);
-  const [files] = useState<{ name: string; url: string }[]>([]);
+  const [isClient, setIsClient] = useState(false);
+  const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
 
-  // useEffect(() => {
-  //   setIsClient(true);
-  //   const getFiles = async () => {
-  //     const uploadedFiles = await fetchUploadedFiles();
-  //     setFiles(uploadedFiles);
-  //   };
+  useEffect(() => {
+    setIsClient(true);
+    const getFiles = async () => {
+      const uploadedFiles = await fetchUploadedFiles();
+      setFiles(uploadedFiles);
+    };
 
-  //   getFiles();
-  // }, []);
-  // if (!isClient) return null;
+    getFiles();
+  }, []);
+  if (!isClient) return null;
+
+  const deleteFile = async (fileUrl: string) => {
+    deletedUploadedFiles(fileUrl);
+  };
 
   return (
     <div>
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell className="col-span-2">File name</Table.HeadCell>
-          <Table.HeadCell></Table.HeadCell>
-          <Table.HeadCell></Table.HeadCell>
+          <Table.HeadCell>Url</Table.HeadCell>
           <Table.HeadCell>Action</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
@@ -41,42 +44,31 @@ const HomeTable = () => {
                   {file.name}
                 </Table.Cell>
 
-                <Table.Cell></Table.Cell>
-                <Table.Cell></Table.Cell>
+                <Table.Cell className="truncate">{file.url}</Table.Cell>
 
                 <Table.Cell>
-                  <a
-                    href="#"
-                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+                  <span
+                    className="flex items-center hover:text-red-600"
+                    onClick={async () => {
+                      await deleteFile(file.url);
+                    }}
                   >
-                    <Dropdown
-                      label=""
-                      dismissOnClick={false}
-                      placement="right"
-                      renderTrigger={() => (
-                        <span>
-                          <Ellipsis />
-                        </span>
-                      )}
-                    >
-                      <Dropdown.Item className="hover:text-red-600 py-0">
-                        <Trash2 size={14} />
-                        <span className="ml-1 cursor-pointer">Delete</span>
-                      </Dropdown.Item>
-                    </Dropdown>
-                  </a>
+                    <Trash2 size={14} />
+                    <span className="ml-1 cursor-pointer">Delete</span>
+                  </span>
                 </Table.Cell>
               </Table.Row>
             ))
           ) : (
-            <tr className="flex justify-center items-center w-full">
-              <td className=" w-full py-4">No files found</td>
-            </tr>
+            <Table.Row className="flex justify-center items-center w-full">
+              <Table.Cell className="w-full py-4 text-center" rowSpan={3}>
+                No files found
+              </Table.Cell>
+            </Table.Row>
           )}
         </Table.Body>
       </Table>
     </div>
   );
 };
-
 export default HomeTable;

@@ -3,14 +3,7 @@
 import { Alert, Button, Card, FileInput, Label } from "flowbite-react";
 import { handleFileChange } from "../actions";
 import { useState } from "react";
-import {
-  FileSpreadsheet,
-  Frown,
-  Smile,
-  Upload,
-  UploadCloud,
-  X,
-} from "lucide-react";
+import { FileSpreadsheet, Frown, Smile, UploadCloud, X } from "lucide-react";
 // import { fetchUploadedFiles } from "../api/api";
 
 export function UploadCard() {

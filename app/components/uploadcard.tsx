@@ -3,7 +3,14 @@
 import { Alert, Button, Card, FileInput, Label } from "flowbite-react";
 import { handleFileChange } from "../actions";
 import { useState } from "react";
-import { FileSpreadsheet, Frown, Smile, X } from "lucide-react";
+import {
+  FileSpreadsheet,
+  Frown,
+  Smile,
+  Upload,
+  UploadCloud,
+  X,
+} from "lucide-react";
 // import { fetchUploadedFiles } from "../api/api";
 
 export function UploadCard() {
@@ -86,21 +93,7 @@ export function UploadCard() {
           className="flex h-96 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
         >
           <div className="flex flex-col items-center justify-center pb-6 pt-5">
-            <svg
-              className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 16"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-              />
-            </svg>
+            <UploadCloud size={32} />
             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
               <span className="font-semibold">Click to upload</span> or drag and
               drop
@@ -120,8 +113,8 @@ export function UploadCard() {
       <div className="my-10">
         {selectedFile && (
           <div className="mt-4 text-sm text-gray-700 dark:text-gray-400">
-            <Card className="shadow-none">
-              <div className="flex justify-between items-center">
+            <Card className="shadow-none ">
+              <div className="flex justify-between items-center p-3">
                 <div className="flex items-center space-x-4">
                   <div className="shrink-0">
                     <FileSpreadsheet className="text-lime-600" />

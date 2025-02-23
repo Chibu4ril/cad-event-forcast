@@ -35,3 +35,35 @@ export const deletedUploadedFiles = async (fileUrl: string) => {
     return { success: false, message: "Failed to delete file" };
   }
 };
+
+export const modelPrediction = async (
+  eventName: string,
+  selectedFileUrl: any
+) => {
+  if (!eventName || !selectedFileUrl) {
+    console.error("Event name and dataset must be selected.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      "https://cad-backend-lcaa.onrender.com/api/runPrediction",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventName, selectedFileUrl }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to execute prediction script");
+    }
+
+    const result = await response.json();
+    // console.log("Prediction script output:", result.output || result.error);
+    return result; // Return result for further processing
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow for handling at the component level
+  }
+};

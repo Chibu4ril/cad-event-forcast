@@ -52,12 +52,14 @@ const PredictPro = () => {
       } else {
         console.warn("⚠️ Missing future_predictions in response:", result);
       }
-
-      console.log("🔍 Current predictionData state:", predictionData);
     } catch (error) {
       console.error("❌ Prediction failed:", error);
     }
   };
+
+  useEffect(() => {
+    console.log("📊 Updated predictionData:", predictionData);
+  }, [predictionData]);
 
   return (
     <div>

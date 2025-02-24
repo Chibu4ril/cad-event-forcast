@@ -54,7 +54,7 @@ const PredictPro = () => {
 
       if (result?.future_predictions) {
         console.log("✅ Setting prediction data:", result.future_predictions);
-        setPredictionData(result.future_predictions);
+        setPredictionData(result);
       } else {
         console.warn("⚠️ Missing future_predictions in response:", result);
       }

@@ -5,13 +5,15 @@ import { FooterBar } from "../components/footer";
 import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";
 import { fetchUploadedFiles, modelPrediction } from "../api/api";
+import PredictionChart from "./plotting";
 
 const PredictPro = () => {
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [eventName, setEventName] = useState("");
-  const [predictionData, setPredictionData] = useState(null);
+  const [predictionData, setPredictionData] = useState<number[]>([]);
+  const [weeks, setWeeks] = useState<string[]>([]);
 
   const handleEventNameChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -50,11 +52,13 @@ const PredictPro = () => {
 
       const result = await modelPrediction(selectedFileUrl);
 
-      console.log("📥 Received result from API:", result);
+      // console.log("📥 Received result from API:", result);
 
       if (result?.future_predictions) {
-        console.log("✅ Setting prediction data:", result.future_predictions);
-        setPredictionData(result);
+        setPredictionData(result.future_predictions ?? []); // Ensure it's never null
+      }
+      if (result?.weeks) {
+        setWeeks(result.weeks ?? []);
       } else {
         console.warn("⚠️ Missing future_predictions in response:", result);
       }
@@ -76,8 +80,17 @@ const PredictPro = () => {
           <div className="grid grid-cols-4 gap-10">
             <div className="col-span-3">
               <Card className="shadow-none">
-                <div className="grid-cols-2 grid p-2 gap-5">
-                  <Card className="p-3 shadow-none"></Card>
+                <div className="grid-cols-1 grid p-2 gap-5">
+                  <Card className="p-3 shadow-none">
+                    {predictionData && predictionData.length > 0 ? (
+                      <PredictionChart
+                        weeks={weeks}
+                        futurePredictions={predictionData}
+                      />
+                    ) : (
+                      <p>Loading prediction data...</p>
+                    )}
+                  </Card>
                 </div>
               </Card>
             </div>

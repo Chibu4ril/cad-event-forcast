@@ -1,51 +1,67 @@
-// import React from "react";
-// import { Line } from "react-chartjs-2";
-// import { Chart, registerables } from "chart.js";
+import React from "react";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-// Chart.register(...registerables); // Register Chart.js components
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-// interface PredictionChartProps {
-//   futurePredictions: number[];
-// }
+const PredictionChart = ({
+  weeks,
+  futurePredictions,
+}: {
+  weeks: string[];
+  futurePredictions: number[];
+}) => {
+  const chartData = {
+    labels: weeks, // X-axis labels (Weeks)
+    datasets: [
+      {
+        label: "Future Predictions",
+        data: futurePredictions, // Y-axis data (Predictions)
+        fill: false,
+        borderColor: "rgba(255, 99, 132, 1)", // Red color
+        backgroundColor: "rgba(255, 99, 132, 0.2)", // Transparent fill
+        tension: 0.2, // Smoothness
+      },
+    ],
+  };
 
-// const PredictionChart: React.FC<PredictionChartProps> = ({
-//   futurePredictions,
-// }) => {
-//   const labels = futurePredictions.map((_, i) => `Week ${i + 1}`);
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Future Predictions",
+      },
+    },
+  };
 
-//   const data = {
-//     labels,
-//     datasets: [
-//       {
-//         label: "Future Predictions",
-//         data: futurePredictions,
-//         borderColor: "red",
-//         backgroundColor: "rgba(255, 99, 132, 0.2)",
-//         borderWidth: 2,
-//         fill: true,
-//         tension: 0.4, // Smooth curves
-//       },
-//     ],
-//   };
+  return (
+    <div style={{ width: "100%", height: "400px" }}>
+      <Line data={chartData} options={chartOptions} />
+    </div>
+  );
+};
 
-//   const options = {
-//     responsive: true,
-//     maintainAspectRatio: false,
-//     plugins: {
-//       legend: { display: true, position: "top" },
-//     },
-//     scales: {
-//       x: { title: { display: true, text: "Weeks" } },
-//       y: { title: { display: true, text: "Predictions" } },
-//     },
-//   };
-
-//   return (
-//     <div style={{ width: "600px", height: "400px", margin: "auto" }}>
-//       <h2>Prediction Chart</h2>
-//       <Line data={data} options={options} />
-//     </div>
-//   );
-// };
-
-// export default PredictionChart;
+export default PredictionChart;

@@ -12,7 +12,6 @@ const PredictPro = () => {
   const [isClient, setIsClient] = useState(false);
   const [eventName, setEventName] = useState("");
   const [predictionData, setPredictionData] = useState(null);
-  const [error, setError] = useState("");
 
   const handleEventNameChange = (
     event: React.ChangeEvent<HTMLInputElement>

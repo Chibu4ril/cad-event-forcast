@@ -5,7 +5,6 @@ import { FooterBar } from "../components/footer";
 import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";
 import { fetchUploadedFiles, modelPrediction } from "../api/api";
-import PredictionChart from "./plotting";
 
 const PredictPro = () => {
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);

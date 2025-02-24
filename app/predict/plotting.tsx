@@ -1,65 +1,51 @@
-import React, { useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
-import { Chart, registerables } from "chart.js";
+// import React from "react";
+// import { Line } from "react-chartjs-2";
+// import { Chart, registerables } from "chart.js";
 
-Chart.register(...registerables);
+// Chart.register(...registerables); // Register Chart.js components
 
-interface PredictionChartProps {
-  futurePredictions: number[];
-}
+// interface PredictionChartProps {
+//   futurePredictions: number[];
+// }
 
-const PredictionChart: React.FC<PredictionChartProps> = ({
-  futurePredictions,
-}) => {
-  const [predictions, setPredictions] = useState<number[]>([]);
+// const PredictionChart: React.FC<PredictionChartProps> = ({
+//   futurePredictions,
+// }) => {
+//   const labels = futurePredictions.map((_, i) => `Week ${i + 1}`);
 
-  const labels = Array.from(
-    { length: futurePredictions?.length || 0 },
-    (_, i) => `Week ${i + 1}`
-  );
+//   const data = {
+//     labels,
+//     datasets: [
+//       {
+//         label: "Future Predictions",
+//         data: futurePredictions,
+//         borderColor: "red",
+//         backgroundColor: "rgba(255, 99, 132, 0.2)",
+//         borderWidth: 2,
+//         fill: true,
+//         tension: 0.4, // Smooth curves
+//       },
+//     ],
+//   };
 
-  // Chart.js Data
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: "Future Predictions",
-        data: predictions.length ? predictions : futurePredictions || [],
-        borderColor: "red",
-        borderWidth: 2,
-        fill: false,
-      },
-    ],
-  };
+//   const options = {
+//     responsive: true,
+//     maintainAspectRatio: false,
+//     plugins: {
+//       legend: { display: true, position: "top" },
+//     },
+//     scales: {
+//       x: { title: { display: true, text: "Weeks" } },
+//       y: { title: { display: true, text: "Predictions" } },
+//     },
+//   };
 
-  // Chart.js Options
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-  };
+//   return (
+//     <div style={{ width: "600px", height: "400px", margin: "auto" }}>
+//       <h2>Prediction Chart</h2>
+//       <Line data={data} options={options} />
+//     </div>
+//   );
+// };
 
-  useEffect(() => {
-    fetch("https://cad-backend-lcaa.onrender.com/api/runPrediction")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && Array.isArray(data.future_predictions)) {
-          setPredictions(data.future_predictions);
-        } else {
-          console.error("Invalid API response:", data);
-          setPredictions([]); // Fallback to empty array
-        }
-      })
-      .catch((err) => {
-        console.error("Error fetching predictions:", err);
-        setPredictions([]);
-      });
-  }, []);
-
-  return (
-    <div style={{ width: "600px", height: "400px" }}>
-      <Line data={data} options={options} />
-    </div>
-  );
-};
-
-export default PredictionChart;
+// export default PredictionChart;

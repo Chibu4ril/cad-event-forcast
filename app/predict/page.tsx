@@ -5,13 +5,14 @@ import { FooterBar } from "../components/footer";
 import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";
 import { fetchUploadedFiles, modelPrediction } from "../api/api";
-import PredictionChart from "./plotting";
 
 const PredictPro = () => {
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [eventName, setEventName] = useState("");
+  const [predictionData, setPredictionData] = useState(null);
+  const [error, setError] = useState("");
 
   const handleEventNameChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -41,9 +42,10 @@ const PredictPro = () => {
   const runPrediction = async () => {
     try {
       const result = await modelPrediction(selectedFileUrl);
-      if (result) {
-        console.log("Final Prediction Output:", result.output);
+      if (result?.future_predictions) {
+        setPredictionData(result.future_predictions);
       }
+      console.log(predictionData);
     } catch (error) {
       console.error("Prediction failed:", error);
     }
@@ -64,14 +66,8 @@ const PredictPro = () => {
               <Card className="shadow-none">
                 <div className="grid-cols-2 grid p-2 gap-5">
                   <Card className="p-3 shadow-none">
-                    <PredictionChart
-                      futurePredictions={[
-                        467.82, 457.47, 447.35, 437.46, 427.78, 418.31, 409.06,
-                        400.01, 391.16, 382.51,
-                      ]}
-                    />
+                    {error && <p style={{ color: "red" }}>{error}</p>}
                   </Card>
-                  <Card className="p-3 shadow-none">Hello</Card>
                 </div>
               </Card>
             </div>

@@ -41,6 +41,7 @@ const PredictPro = () => {
   const runPrediction = async () => {
     try {
       const result = await modelPrediction(selectedFileUrl);
+
       if (result?.future_predictions) {
         setPredictionData(result.future_predictions);
       }

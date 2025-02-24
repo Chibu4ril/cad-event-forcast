@@ -57,6 +57,8 @@ export const modelPrediction = async (selectedFileUrl: string | null) => {
     }
 
     const result = await response.json();
+    console.log();
+
     // console.log("Prediction script output:", result.output || result.error);
     return result; // Return result for further processing
   } catch (error) {

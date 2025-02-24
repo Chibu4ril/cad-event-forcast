@@ -33,7 +33,9 @@ const PredictPro = () => {
   }, []);
 
   useEffect(() => {
-    console.log("📊 Updated predictionData:", predictionData);
+    if (predictionData) {
+      console.log("📊 Updated predictionData:", predictionData);
+    }
   }, [predictionData]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {

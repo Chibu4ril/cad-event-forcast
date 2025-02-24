@@ -38,7 +38,7 @@ export const deletedUploadedFiles = async (fileUrl: string) => {
 
 export const modelPrediction = async (selectedFileUrl: string | null) => {
   if (!selectedFileUrl) {
-    console.error("Event name and dataset must be selected.");
+    console.error("Dataset must be selected.");
     return;
   }
 

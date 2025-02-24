@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 
-Chart.register(...registerables); // Register Chart.js components
+Chart.register(...registerables);
 
 interface PredictionChartProps {
   futurePredictions: number[];
@@ -11,41 +11,43 @@ interface PredictionChartProps {
 const PredictionChart: React.FC<PredictionChartProps> = ({
   futurePredictions,
 }) => {
-  const weeks = Array.from(
+  const [predictions, setPredictions] = useState([]);
+
+  // Generate week labels dynamically
+  const labels = Array.from(
     { length: futurePredictions.length },
     (_, i) => `Week ${i + 1}`
   );
 
+  // Chart.js Data
   const data = {
-    labels: weeks,
+    labels,
     datasets: [
       {
-        label: "Future Registrations",
+        label: "Future Predictions",
         data: futurePredictions,
+        borderColor: "red",
+        borderWidth: 2,
         fill: false,
-        borderColor: "rgba(75,192,192,1)",
-        tension: 0.4, // Smooth line
       },
     ],
   };
 
+  // Chart.js Options
   const options = {
     responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: `Predicted Growth for `,
-        font: { size: 18 },
-      },
-    },
-    scales: {
-      x: { title: { display: true, text: "Week" } },
-      y: { title: { display: true, text: "Predicted Registrations" } },
-    },
+    maintainAspectRatio: false,
   };
 
+  useEffect(() => {
+    fetch("https://your-api-url.com/api/runPrediction")
+      .then((res) => res.json())
+      .then((data) => setPredictions(data.future_predictions))
+      .catch((err) => console.error("Error fetching predictions:", err));
+  }, []);
+
   return (
-    <div className="p-4 bg-white shadow-md rounded-lg">
+    <div style={{ width: "600px", height: "400px" }}>
       <Line data={data} options={options} />
     </div>
   );

@@ -5,6 +5,7 @@ import { FooterBar } from "../components/footer";
 import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";
 import { fetchUploadedFiles, modelPrediction } from "../api/api";
+import PredictionChart from "./plotting";
 
 const PredictPro = () => {
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
@@ -62,7 +63,14 @@ const PredictPro = () => {
             <div className="col-span-3">
               <Card className="shadow-none">
                 <div className="grid-cols-2 grid p-2 gap-5">
-                  <Card className="p-3 shadow-none"></Card>
+                  <Card className="p-3 shadow-none">
+                    <PredictionChart
+                      futurePredictions={[
+                        467.82, 457.47, 447.35, 437.46, 427.78, 418.31, 409.06,
+                        400.01, 391.16, 382.51,
+                      ]}
+                    />
+                  </Card>
                   <Card className="p-3 shadow-none">Hello</Card>
                 </div>
               </Card>

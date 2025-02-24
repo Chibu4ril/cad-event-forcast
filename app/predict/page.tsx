@@ -65,9 +65,7 @@ const PredictPro = () => {
             <div className="col-span-3">
               <Card className="shadow-none">
                 <div className="grid-cols-2 grid p-2 gap-5">
-                  <Card className="p-3 shadow-none">
-                    {error && <p style={{ color: "red" }}>{error}</p>}
-                  </Card>
+                  <Card className="p-3 shadow-none"></Card>
                 </div>
               </Card>
             </div>

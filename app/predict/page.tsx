@@ -40,14 +40,22 @@ const PredictPro = () => {
 
   const runPrediction = async () => {
     try {
+      console.log("📤 Sending request with:", selectedFileUrl);
+
       const result = await modelPrediction(selectedFileUrl);
 
+      console.log("📥 Received result from API:", result);
+
       if (result?.future_predictions) {
+        console.log("✅ Setting prediction data:", result.future_predictions);
         setPredictionData(result.future_predictions);
+      } else {
+        console.warn("⚠️ Missing future_predictions in response:", result);
       }
-      console.log(predictionData);
+
+      console.log("🔍 Current predictionData state:", predictionData);
     } catch (error) {
-      console.error("Prediction failed:", error);
+      console.error("❌ Prediction failed:", error);
     }
   };
 

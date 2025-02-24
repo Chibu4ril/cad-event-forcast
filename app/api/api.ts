@@ -38,11 +38,13 @@ export const deletedUploadedFiles = async (fileUrl: string) => {
 
 export const modelPrediction = async (selectedFileUrl: string | null) => {
   if (!selectedFileUrl) {
-    console.error("Dataset must be selected.");
+    console.error("⚠️ Dataset must be selected.");
     return;
   }
 
   try {
+    console.log("📤 Calling API with:", selectedFileUrl);
+
     const response = await fetch(
       "https://cad-backend-lcaa.onrender.com/api/runPrediction",
       {
@@ -52,17 +54,20 @@ export const modelPrediction = async (selectedFileUrl: string | null) => {
       }
     );
 
+    console.log("🚀 Raw Response:", response);
+
     if (!response.ok) {
+      const errorText = await response.text(); // Read error response body
+      console.error("❌ API Error:", errorText);
       throw new Error("Failed to execute prediction script");
     }
 
     const result = await response.json();
-    console.log();
+    console.log("📥 Parsed JSON Result:", result);
 
-    // console.log("Prediction script output:", result.output || result.error);
     return result; // Return result for further processing
   } catch (error) {
-    console.error("Error:", error);
-    throw error; // Rethrow for handling at the component level
+    console.error("❌ Error:", error);
+    throw error;
   }
 };

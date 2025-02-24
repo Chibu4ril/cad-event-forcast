@@ -32,6 +32,10 @@ const PredictPro = () => {
     getFiles();
   }, []);
 
+  useEffect(() => {
+    console.log("📊 Updated predictionData:", predictionData);
+  }, [predictionData]);
+
   const handleFileSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedFile = files.find((file) => file.name === event.target.value);
     setSelectedFileUrl(selectedFile ? selectedFile.url : null);
@@ -56,10 +60,6 @@ const PredictPro = () => {
       console.error("❌ Prediction failed:", error);
     }
   };
-
-  useEffect(() => {
-    console.log("📊 Updated predictionData:", predictionData);
-  }, [predictionData]);
 
   return (
     <div>

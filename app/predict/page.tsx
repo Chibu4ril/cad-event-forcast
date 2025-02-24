@@ -39,7 +39,7 @@ const PredictPro = () => {
 
   const runPrediction = async () => {
     try {
-      const result = await modelPrediction(eventName, selectedFileUrl);
+      const result = await modelPrediction(selectedFileUrl);
       if (result) {
         console.log("Final Prediction Output:", result.output);
       }

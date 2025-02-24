@@ -5,12 +5,10 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables); // Register Chart.js components
 
 interface PredictionChartProps {
-  eventName: string;
   futurePredictions: number[];
 }
 
 const PredictionChart: React.FC<PredictionChartProps> = ({
-  eventName,
   futurePredictions,
 }) => {
   const weeks = Array.from(
@@ -36,7 +34,7 @@ const PredictionChart: React.FC<PredictionChartProps> = ({
     plugins: {
       title: {
         display: true,
-        text: `Predicted Growth for ${eventName}`,
+        text: `Predicted Growth for `,
         font: { size: 18 },
       },
     },

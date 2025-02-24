@@ -11,7 +11,7 @@ interface PredictionChartProps {
 const PredictionChart: React.FC<PredictionChartProps> = ({
   futurePredictions,
 }) => {
-  const [predictions, setPredictions] = useState([]);
+  const [predictions, setPredictions] = useState<number[]>([]);
 
   // Generate week labels dynamically
   const labels = Array.from(
@@ -25,7 +25,7 @@ const PredictionChart: React.FC<PredictionChartProps> = ({
     datasets: [
       {
         label: "Future Predictions",
-        data: futurePredictions,
+        data: predictions.length ? predictions : futurePredictions,
         borderColor: "red",
         borderWidth: 2,
         fill: false,
@@ -40,7 +40,7 @@ const PredictionChart: React.FC<PredictionChartProps> = ({
   };
 
   useEffect(() => {
-    fetch("https://your-api-url.com/api/runPrediction")
+    fetch("https://cad-backend-lcaa.onrender.com/api/runPrediction")
       .then((res) => res.json())
       .then((data) => setPredictions(data.future_predictions))
       .catch((err) => console.error("Error fetching predictions:", err));

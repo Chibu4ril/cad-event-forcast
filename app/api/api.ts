@@ -36,11 +36,8 @@ export const deletedUploadedFiles = async (fileUrl: string) => {
   }
 };
 
-export const modelPrediction = async (
-  eventName: string,
-  selectedFileUrl: string | null
-) => {
-  if (!eventName || !selectedFileUrl) {
+export const modelPrediction = async (selectedFileUrl: string | null) => {
+  if (!selectedFileUrl) {
     console.error("Event name and dataset must be selected.");
     return;
   }
@@ -51,7 +48,7 @@ export const modelPrediction = async (
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventName, selectedFileUrl }),
+        body: JSON.stringify({ selectedFileUrl }),
       }
     );
 

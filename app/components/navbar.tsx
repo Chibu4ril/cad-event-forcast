@@ -18,7 +18,7 @@ export function NavigationBar() {
         </Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse>
-          <Navbar.Link href="#" className="text-white">
+          <Navbar.Link href="/about" className="text-white">
             About This Project
           </Navbar.Link>
           <Navbar.Link href="#" className="text-white">

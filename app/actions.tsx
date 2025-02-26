@@ -17,3 +17,9 @@ export const handleFileChange = async (file: File, fileName: string) => {
 
   return { filePath: `uploads/${fileName}` };
 };
+
+export const handleFileDelete = async () => {
+  const { error } = await supabase.storage
+    .from("uploads")
+    .remove(["object-path-2", "folder/avatar2.png"]);
+};

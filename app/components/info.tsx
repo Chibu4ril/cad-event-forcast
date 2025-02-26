@@ -1,35 +1,32 @@
 "use client";
 
 import { Card } from "flowbite-react";
-import { Cog, Download, InfoIcon, UploadCloud } from "lucide-react";
+import { Cog, Download, InfoIcon, SheetIcon, UploadCloud } from "lucide-react";
 
 export function InfoCard() {
   return (
-    <Card className="max-w-sm p-6 bg-blue-50 bg-opacity-50 border-none shadow-none">
-      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Key Notes
-      </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400">
-        Here are some key points to help you use this app effectively:
-      </p>
-      <ul className="my-7 space-y-5">
+    <Card className=" p-6 rounded-2xl bg-blue-100 bg-opacity-50 border-none shadow-none">
+      <ul className=" space-y-5">
         <li className="flex space-x-3">
-          <Card className="w-full p-4 border-none bg-lime-50 bg-opacity-50 shadow-none rounded-sm">
-            <div className="flex items-center space-x-4">
-              <div className="shrink-0">
-                <Download className="text-lime-600" />
+          <Card className="w-full shadow-none rounded-sm border-none">
+            <div className="flex justify-between p-3">
+              <div className="flex items-center">
+                <SheetIcon className="text-lime-600 mr-2"></SheetIcon>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
+                    Download Dataset Template
+                  </p>
+                  <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+                    .CSV file
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold text-gray-900 dark:text-white">
-                  Download Dataset Template
-                </p>
-                <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                  .CSV file
-                </p>
-              </div>
-              {/* <div className="inline-flex items-center text-sm  text-gray-900 dark:text-white">
-                4Kb
-              </div> */}
+              <a
+                href=" publick/dataset_template.csv"
+                className="ml-10 hover:bg-gray-100 p-2 rounded-md"
+              >
+                <Download />
+              </a>
             </div>
           </Card>
         </li>

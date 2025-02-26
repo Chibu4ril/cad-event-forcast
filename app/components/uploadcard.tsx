@@ -59,7 +59,7 @@ export function UploadCard() {
   };
 
   return (
-    <div className="mt-7">
+    <div className="">
       {uploadStatus && (
         <div className="mb-4">
           <Alert

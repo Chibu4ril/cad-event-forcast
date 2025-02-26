@@ -4,11 +4,13 @@ import { Table } from "flowbite-react";
 import { Trash2 } from "lucide-react";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { deletedUploadedFiles, fetchUploadedFiles } from "../api/api";
+import { fetchUploadedFiles } from "../api/api";
+import DeleteConfirmation from "./modal";
 
 const HomeTable = () => {
   const [isClient, setIsClient] = useState(false);
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -21,9 +23,7 @@ const HomeTable = () => {
   }, []);
   if (!isClient) return null;
 
-  const deleteFile = async (fileUrl: string) => {
-    deletedUploadedFiles(fileUrl);
-  };
+  const handleClose = () => setOpenModal(false);
 
   return (
     <div>
@@ -49,9 +49,7 @@ const HomeTable = () => {
                 <Table.Cell>
                   <span
                     className="flex items-center hover:text-red-600"
-                    onClick={async () => {
-                      await deleteFile(file.url);
-                    }}
+                    onClick={() => setOpenModal(true)}
                   >
                     <Trash2 size={14} />
                     <span className="ml-1 cursor-pointer">Delete</span>
@@ -68,6 +66,8 @@ const HomeTable = () => {
           )}
         </Table.Body>
       </Table>
+
+      <DeleteConfirmation open={openModal} onClose={handleClose} />
     </div>
   );
 };

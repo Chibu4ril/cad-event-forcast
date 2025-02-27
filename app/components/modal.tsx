@@ -2,16 +2,24 @@
 
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { handleFileDelete } from "../actions";
 
 interface DeleteConfirmationProps {
   open: boolean;
   onClose: () => void;
+  fileUrl: string | null;
 }
 
 const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({
   open,
   onClose,
+  fileUrl,
 }) => {
+  const deleteSet = async () => {
+    if (!fileUrl) return;
+    const deleteFile = await handleFileDelete(fileUrl);
+    onClose();
+  };
   return (
     <>
       <Modal
@@ -29,7 +37,11 @@ const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({
               Are you sure you want to delete this dataset?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button className="rounded-md" color="failure" onClick={onClose}>
+              <Button
+                className="rounded-md"
+                color="failure"
+                onClick={deleteSet}
+              >
                 {"Yes, I'm sure"}
               </Button>
               <Button color="gray" onClick={onClose}>

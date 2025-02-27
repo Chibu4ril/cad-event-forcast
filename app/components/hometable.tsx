@@ -11,6 +11,7 @@ const HomeTable = () => {
   const [isClient, setIsClient] = useState(false);
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -23,7 +24,15 @@ const HomeTable = () => {
   }, []);
   if (!isClient) return null;
 
-  const handleClose = () => setOpenModal(false);
+  const handleClose = () => {
+    setOpenModal(false);
+    setSelectedFileUrl(null);
+  };
+
+  const handleOpenModal = (fileUrl: string) => {
+    setSelectedFileUrl(fileUrl);
+    setOpenModal(true);
+  };
 
   return (
     <div>
@@ -49,7 +58,7 @@ const HomeTable = () => {
                 <Table.Cell>
                   <span
                     className="flex items-center hover:text-red-600"
-                    onClick={() => setOpenModal(true)}
+                    onClick={() => handleOpenModal(file.url)}
                   >
                     <Trash2 size={14} />
                     <span className="ml-1 cursor-pointer">Delete</span>
@@ -67,7 +76,11 @@ const HomeTable = () => {
         </Table.Body>
       </Table>
 
-      <DeleteConfirmation open={openModal} onClose={handleClose} />
+      <DeleteConfirmation
+        open={openModal}
+        onClose={handleClose}
+        fileUrl={selectedFileUrl}
+      />
     </div>
   );
 };

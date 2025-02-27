@@ -2,12 +2,13 @@
 
 import { Alert, Button, Card, FileInput, Label } from "flowbite-react";
 import { handleFileChange } from "../actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FileSpreadsheet, Frown, Smile, UploadCloud, X } from "lucide-react";
 // import { fetchUploadedFiles } from "../api/api";
 
 export function UploadCard() {
   const [uploading, setUploading] = useState(false);
+
   const [uploadStatus, setUploadStatus] = useState<{
     message: string;
     success: boolean;
@@ -57,6 +58,17 @@ export function UploadCard() {
 
     setUploading(false);
   };
+
+  useEffect(() => {
+    if (uploadStatus) {
+      const timer = setTimeout(() => {
+        setUploadStatus(null);
+        window.location.reload();
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [uploadStatus]);
 
   return (
     <div className="">
@@ -122,7 +134,12 @@ export function UploadCard() {
                   </div>
                 </div>
                 <div>
-                  <button onClick={() => setSelectedFile(null)}>
+                  <button
+                    onClick={() => {
+                      window.location.reload();
+                      setSelectedFile(null);
+                    }}
+                  >
                     <X className="text-red-600" size={16} />
                   </button>
                 </div>

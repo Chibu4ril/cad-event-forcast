@@ -26,9 +26,7 @@ export const handleFileDelete = async (fileUrl: string) => {
       return;
     }
 
-    const { data, error } = await supabase.storage
-      .from("uploads")
-      .remove([filename]);
+    const { error } = await supabase.storage.from("uploads").remove([filename]);
 
     if (error) {
       console.error("Error deleting file from Supabase:", error.message);

@@ -13,7 +13,7 @@ const PredictPro = () => {
   const [isClient, setIsClient] = useState(false);
   const [predictionData, setPredictionData] = useState<number[]>([]);
   const [weeks, setWeeks] = useState<string[]>([]);
-  const [selectedEventDate, setSelectedEvemtDate] = useState<Date | null>(null);
+  const [selectedEventDate, setSelectedEventDate] = useState<Date | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [eventDate, setEventDate] = useState<string>("");
   const [regDate, setRegDate] = useState<string>("");
@@ -44,7 +44,7 @@ const PredictPro = () => {
   if (!isClient) return null;
 
   const handleEventDateChange = (date: Date | null) => {
-    setSelectedEvemtDate(date);
+    setSelectedEventDate(date);
     if (date) {
       setEventDate(formatDate(date));
     }
@@ -166,18 +166,18 @@ const PredictPro = () => {
                     </div>
                     <Datepicker
                       value={selectedDate ?? undefined}
-                      onChange={handleEventDateChange}
+                      onChange={handleRegDateChange}
                     />
                   </div>
 
-                  {selectedEventDate && (
+                  {selectedDate && (
                     <div>
                       <p className="block text-sm py-0 mb-0 font-bold  pb-2 ">
                         Date of First Registration:
                       </p>
                       <HR className="my-0" />
                       <div className="text-sm  rounded  text-gray-500 p-2 pl-0">
-                        {selectedEventDate.toDateString()}
+                        {selectedDate.toDateString()}
                       </div>
                     </div>
                   )}
@@ -189,19 +189,19 @@ const PredictPro = () => {
                       <Label htmlFor="eventname" value="Select Event Date" />
                     </div>
                     <Datepicker
-                      value={selectedDate ?? undefined}
-                      onChange={handleRegDateChange}
+                      value={selectedEventDate ?? undefined}
+                      onChange={handleEventDateChange}
                     />
                   </div>
 
-                  {selectedDate && (
+                  {selectedEventDate && (
                     <div>
                       <p className="block text-sm py-0 mb-0 font-bold  pb-2 ">
                         Expected Date of Event:
                       </p>
                       <HR className="my-0" />
                       <div className="text-sm  rounded  text-gray-500 p-2 pl-0">
-                        {selectedDate.toDateString()}
+                        {selectedEventDate.toDateString()}
                       </div>
                     </div>
                   )}

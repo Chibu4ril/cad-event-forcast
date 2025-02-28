@@ -17,7 +17,7 @@ export const modelPrediction = async (
   selectedFileUrl: string | null,
   eventDate: string | null
 ) => {
-  if (!selectedFileUrl && eventDate) {
+  if (!selectedFileUrl || !eventDate) {
     console.error("⚠️ Dataset and Event Date must be selected.");
     return;
   }

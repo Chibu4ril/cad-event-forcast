@@ -51,29 +51,37 @@ const PredictPro = () => {
 
   // Function to format the date to match Pandas (%d-%m-%Y)
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }).format(date);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Adding 1 as getMonth() is 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
   };
 
   const runPrediction = async () => {
     try {
-      console.log("📤 Sending request with:", selectedFileUrl);
+      const fileUrl = selectedFileUrl?.split("?")[0] ?? "";
 
-      const result = await modelPrediction(selectedFileUrl, eventDate);
+      console.log("📤 Sending request with:", fileUrl, eventDate);
+      const result = await modelPrediction(fileUrl, eventDate);
 
-      // console.log("📥 Received result from API:", result);
+      console.log("📥 Received result from API:", result);
 
-      if (result?.future_predictions) {
-        setPredictionData(result.future_predictions ?? []); // Ensure it's never null
+      if (result) {
+        setPredictionData(result ?? []);
       }
-      if (result?.weeks) {
+      if (result) {
         setWeeks(result.weeks ?? []);
-      } else {
-        console.warn("⚠️ Missing future_predictions in response:", result);
       }
+
+      // if (result?.future_predictions) {
+      //   setPredictionData(result.future_predictions ?? []); // Ensure it's never null
+      // }
+      // if (result?.weeks) {
+      //   setWeeks(result.weeks ?? []);
+      // } else {
+      //   console.warn("⚠️ Missing future_predictions in response:", result);
+      // }
     } catch (error) {
       console.error("❌ Prediction failed:", error);
     }
@@ -149,7 +157,7 @@ const PredictPro = () => {
                 <div className="mb-5">
                   <div className=" mb-5">
                     <div className="mb-2 block">
-                      <Label htmlFor="eventname" value="Select Event Date" />
+                      <Label htmlFor="eventname" value="Date of the Event" />
                     </div>
                     <Datepicker
                       value={selectedEventDate ?? undefined}

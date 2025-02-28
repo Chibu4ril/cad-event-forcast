@@ -14,9 +14,7 @@ const PredictPro = () => {
   const [predictionData, setPredictionData] = useState<number[]>([]);
   const [weeks, setWeeks] = useState<string[]>([]);
   const [selectedEventDate, setSelectedEventDate] = useState<Date | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [eventDate, setEventDate] = useState<string>("");
-  const [regDate, setRegDate] = useState<string>("");
 
   useEffect(() => {
     setIsClient(true);
@@ -51,14 +49,6 @@ const PredictPro = () => {
     console.log("Selected Date:", date ? formatDate(date) : "No date selected");
   };
 
-  const handleRegDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-    if (date) {
-      setRegDate(formatDate(date));
-    }
-    console.log("Selected Date:", date ? formatDate(date) : "No date selected");
-  };
-
   // Function to format the date to match Pandas (%d-%m-%Y)
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat("en-GB", {
@@ -70,9 +60,9 @@ const PredictPro = () => {
 
   const runPrediction = async () => {
     try {
-      console.log("📤 Sending request with:", selectedFileUrl, regDate);
+      console.log("📤 Sending request with:", selectedFileUrl);
 
-      const result = await modelPrediction(selectedFileUrl, eventDate, regDate);
+      const result = await modelPrediction(selectedFileUrl, eventDate);
 
       // console.log("📥 Received result from API:", result);
 
@@ -153,33 +143,6 @@ const PredictPro = () => {
                         </div>
                       </div>
                     </Card>
-                  )}
-                </div>
-
-                <div className="mb-5">
-                  <div className=" mb-5">
-                    <div className="mb-2 block">
-                      <Label
-                        htmlFor="eventname"
-                        value="First Date of Registration "
-                      />
-                    </div>
-                    <Datepicker
-                      value={selectedDate ?? undefined}
-                      onChange={handleRegDateChange}
-                    />
-                  </div>
-
-                  {selectedDate && (
-                    <div>
-                      <p className="block text-sm py-0 mb-0 font-bold  pb-2 ">
-                        Date of First Registration:
-                      </p>
-                      <HR className="my-0" />
-                      <div className="text-sm  rounded  text-gray-500 p-2 pl-0">
-                        {selectedDate.toDateString()}
-                      </div>
-                    </div>
                   )}
                 </div>
 

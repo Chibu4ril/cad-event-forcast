@@ -13,9 +13,13 @@ export const fetchUploadedFiles = async () => {
   }
 };
 
-export const modelPrediction = async (selectedFileUrl: string | null) => {
-  if (!selectedFileUrl) {
-    console.error("⚠️ Dataset must be selected.");
+export const modelPrediction = async (
+  selectedFileUrl: string | null,
+  eventDate: string | null,
+  regDate: string | null
+) => {
+  if (!selectedFileUrl && eventDate && regDate) {
+    console.error("⚠️ Dataset and Event Date must be selected.");
     return;
   }
 
@@ -27,7 +31,7 @@ export const modelPrediction = async (selectedFileUrl: string | null) => {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ selectedFileUrl }),
+        body: JSON.stringify({ selectedFileUrl, eventDate, regDate }),
       }
     );
 

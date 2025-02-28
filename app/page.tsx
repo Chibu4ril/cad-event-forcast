@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <main className=" flex flex-col justify-between h-screen">
         <NavigationBar />
-        <div className="container mx-auto mt-20 lg:px-48 ">
+        <div className="container mx-auto mt-20 xl:px-28 ">
           <div>
             <div className="grid grid-cols-5 gap-x-10">
               <div className="py-0 col-span-3 ">

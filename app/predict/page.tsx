@@ -1,6 +1,14 @@
 "use client";
 
-import { Button, Card, HR, Label, Select, TextInput } from "flowbite-react";
+import {
+  Button,
+  Card,
+  Datepicker,
+  HR,
+  Label,
+  Select,
+  TextInput,
+} from "flowbite-react";
 import { FooterBar } from "../components/footer";
 import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";
@@ -11,15 +19,12 @@ const PredictPro = () => {
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
-  const [eventName, setEventName] = useState("");
   const [predictionData, setPredictionData] = useState<number[]>([]);
   const [weeks, setWeeks] = useState<string[]>([]);
-
-  const handleEventNameChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setEventName(event.target.value);
-  };
+  const [selectedEventDate, setSelectedEvemtDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [eventDate, setEventDate] = useState<string>("");
+  const [regDate, setRegDate] = useState<string>("");
 
   useEffect(() => {
     setIsClient(true);
@@ -46,11 +51,36 @@ const PredictPro = () => {
   };
   if (!isClient) return null;
 
+  const handleEventDateChange = (date: Date | null) => {
+    setSelectedEvemtDate(date);
+    if (date) {
+      setEventDate(formatDate(date));
+    }
+    console.log("Selected Date:", date ? formatDate(date) : "No date selected");
+  };
+
+  const handleRegDateChange = (date: Date | null) => {
+    setSelectedDate(date);
+    if (date) {
+      setRegDate(formatDate(date));
+    }
+    console.log("Selected Date:", date ? formatDate(date) : "No date selected");
+  };
+
+  // Function to format the date to match Pandas (%d-%m-%Y)
+  const formatDate = (date: Date) => {
+    return new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }).format(date);
+  };
+
   const runPrediction = async () => {
     try {
-      console.log("📤 Sending request with:", selectedFileUrl);
+      console.log("📤 Sending request with:", selectedFileUrl, regDate);
 
-      const result = await modelPrediction(selectedFileUrl);
+      const result = await modelPrediction(selectedFileUrl, eventDate, regDate);
 
       // console.log("📥 Received result from API:", result);
 
@@ -71,17 +101,15 @@ const PredictPro = () => {
     <div>
       <NavigationBar />
       <main className=" flex flex-col justify-between h-screen">
-        <div className="container mx-auto mt-5">
+        <div className="container mx-auto mt-20 lg:px-48 ">
           <div className="mb-10 my-5">
-            <h1 className="text-3xl font-bold">
-              {eventName + " "} Event Forecast
-            </h1>
+            <h1 className="text-3xl font-bold">Event Forecast</h1>
           </div>
           <div className="grid grid-cols-4 gap-10">
             <div className="col-span-3">
               <Card className="shadow-none">
                 <div className="grid-cols-1 grid p-2 gap-5">
-                  <Card className="p-3 shadow-none">
+                  <Card className="p-3 shadow-none h-full">
                     {predictionData && predictionData.length > 0 ? (
                       <PredictionChart
                         weeks={weeks}
@@ -98,46 +126,14 @@ const PredictPro = () => {
             <Card className="shadow-none border-none py-0  ">
               <div className="">
                 <div className="mb-5">
-                  <div className="">
-                    <div className="mb-2 block">
-                      <Label htmlFor="eventname" value="Event Name" />
-                    </div>
-                    <TextInput
-                      onChange={handleEventNameChange}
-                      type="text"
-                      placeholder="Enter an event title here!"
-                      required
-                    />
-                  </div>
-
-                  <Card className="shadow-none rounded-none py-0 my-0 ">
-                    <div className="p-5">
-                      <p className="block text-sm py-0 mb-0 font-medium">
-                        Event Name:
-                      </p>
-                      <HR className="my-2" />
-                      {eventName ? (
-                        <div>
-                          <div className=" text-sm break-all rounded  text-gray-500 py-0">
-                            <span aria-valuetext="Enter event name">
-                              {eventName}
-                            </span>
-                          </div>
-                        </div>
-                      ) : (
-                        <span className="text-sm italic text-gray-400">
-                          Enter an event title here!
-                        </span>
-                      )}
-                    </div>
-                  </Card>
-                </div>
-
-                <div>
                   <div className="mb-2 block">
                     <Label htmlFor="datasets" value="Select a Datasets" />
                   </div>
-                  <Select id="datasets" onChange={handleFileSelect}>
+                  <Select
+                    id="datasets"
+                    className="mb-5"
+                    onChange={handleFileSelect}
+                  >
                     <option value="">Select a dataset</option>
                     {files.length > 0 ? (
                       files.map((file) => (
@@ -149,37 +145,88 @@ const PredictPro = () => {
                       <option disabled>No files found</option>
                     )}
                   </Select>
-                </div>
 
-                <Card className="shadow-none rounded-none py-0 my-0 ">
-                  <div className="p-5">
-                    <p className="block text-sm py-0 mb-0 font-bold">
-                      Dataset URL:
-                    </p>
-                    <HR className="my-0" />
+                  {selectedFileUrl && (
+                    <Card className="shadow-none rounded-none py-0 my-0 ">
+                      <div className="p-5">
+                        <p className="block text-sm py-0 mb-0 font-bold">
+                          Dataset URL:
+                        </p>
+                        <HR className="my-0" />
 
-                    {selectedFileUrl && (
-                      <div>
-                        <div className=" text-sm break-all rounded  text-blue-400 py-0">
-                          <span>{selectedFileUrl}</span>
+                        <div>
+                          <div className=" text-sm break-all rounded  text-blue-400 py-0">
+                            <span>{selectedFileUrl}</span>
+                          </div>
                         </div>
                       </div>
-                    )}
+                    </Card>
+                  )}
+                </div>
+
+                <div className="mb-5">
+                  <div className=" mb-5">
+                    <div className="mb-2 block">
+                      <Label
+                        htmlFor="eventname"
+                        value="First Date of Registration "
+                      />
+                    </div>
+                    <Datepicker
+                      value={selectedDate ?? undefined}
+                      onChange={handleEventDateChange}
+                    />
                   </div>
-                </Card>
+
+                  {selectedEventDate && (
+                    <div>
+                      <p className="block text-sm py-0 mb-0 font-bold  pb-2 ">
+                        Date of First Registration:
+                      </p>
+                      <HR className="my-0" />
+                      <div className="text-sm  rounded  text-gray-500 p-2 pl-0">
+                        {selectedEventDate.toDateString()}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mb-5">
+                  <div className=" mb-5">
+                    <div className="mb-2 block">
+                      <Label htmlFor="eventname" value="Select Event Date" />
+                    </div>
+                    <Datepicker
+                      value={selectedDate ?? undefined}
+                      onChange={handleRegDateChange}
+                    />
+                  </div>
+
+                  {selectedDate && (
+                    <div>
+                      <p className="block text-sm py-0 mb-0 font-bold  pb-2 ">
+                        Expected Date of Event:
+                      </p>
+                      <HR className="my-0" />
+                      <div className="text-sm  rounded  text-gray-500 p-2 pl-0">
+                        {selectedDate.toDateString()}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </Card>
+            {selectedFileUrl && (
+              <div className="flex flex-col mt-4">
+                <Button
+                  className="w-full bg-black enabled:hover:bg-gray-600 rounded-sm py-1"
+                  onClick={runPrediction}
+                >
+                  Run Prediction
+                </Button>
+              </div>
+            )}
           </div>
-          {selectedFileUrl && (
-            <div className="flex flex-col mt-4">
-              <Button
-                className="w-full bg-black enabled:hover:bg-gray-600 rounded-sm py-1"
-                onClick={runPrediction}
-              >
-                Run Prediction
-              </Button>
-            </div>
-          )}
         </div>
         <FooterBar />
       </main>

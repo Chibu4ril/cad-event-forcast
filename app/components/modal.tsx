@@ -19,6 +19,7 @@ const DeleteConfirmation: React.FC<DeleteConfirmationProps> = ({
     if (!fileUrl) return;
     const deleteFile = await handleFileDelete(fileUrl);
     onClose();
+    return deleteFile;
   };
   return (
     <>

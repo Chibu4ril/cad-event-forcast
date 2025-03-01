@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Plot from "react-plotly.js";
 
 interface LogisticGrowthData {
@@ -26,6 +27,12 @@ const LogisticsGrowthChart = ({
 }: {
   jsonData: LogisticGrowthData;
 }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Logistic Growth function
   const logisticGrowth = (
     t: number,
@@ -82,6 +89,8 @@ const LogisticsGrowthChart = ({
     yaxis: { title: "Cumulative Registrations" },
     legend: { orientation: "h" },
   };
+
+  if (!isClient) return <p>Loading chart...</p>;
 
   return (
     <Plot

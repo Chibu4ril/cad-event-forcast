@@ -36,7 +36,7 @@ const PredictPro = () => {
   const [jsonData, setJsonData] = useState<LogisticGrowthData | undefined>(
     undefined
   );
-  const [selectedEventDate, setSelectedEventDate] = useState<Date | null>(null);
+  // const [selectedEventDate, setSelectedEventDate] = useState<Date | null>(null);
   const [eventDate, setEventDate] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
@@ -66,13 +66,13 @@ const PredictPro = () => {
   };
   if (!isClient) return null;
 
-  const handleEventDateChange = (date: Date | null) => {
-    setSelectedEventDate(date);
-    if (date) {
-      setEventDate(formatDate(date));
-    }
-    console.log("Selected Date:", date ? formatDate(date) : "No date selected");
-  };
+  // const handleEventDateChange = (date: Date | null) => {
+  //   setSelectedEventDate(date);
+  //   if (date) {
+  //     setEventDate(formatDate(date));
+  //   }
+  //   console.log("Selected Date:", date ? formatDate(date) : "No date selected");
+  // };
 
   // Function to format the date to match Pandas (%d-%m-%Y)
   const formatDate = (date: Date) => {

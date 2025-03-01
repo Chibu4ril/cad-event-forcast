@@ -5,7 +5,6 @@ import { FooterBar } from "../components/footer";
 import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";
 import { fetchUploadedFiles, modelPrediction } from "../api/api";
-// import PredictionChart from "./plotting";
 import LogisticsGrowthChart from "./plotly";
 
 interface LogisticGrowthData {
@@ -36,8 +35,6 @@ const PredictPro = () => {
   const [jsonData, setJsonData] = useState<LogisticGrowthData | undefined>(
     undefined
   );
-  // const [selectedEventDate, setSelectedEventDate] = useState<Date | null>(null);
-  // const [eventDate, setEventDate] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
 
@@ -66,29 +63,11 @@ const PredictPro = () => {
   };
   if (!isClient) return null;
 
-  // const handleEventDateChange = (date: Date | null) => {
-  //   setSelectedEventDate(date);
-  //   if (date) {
-  //     setEventDate(formatDate(date));
-  //   }
-  //   console.log("Selected Date:", date ? formatDate(date) : "No date selected");
-  // };
-
-  // Function to format the date to match Pandas (%d-%m-%Y)
-  // const formatDate = (date: Date) => {
-  //   const year = date.getFullYear();
-  //   const month = String(date.getMonth() + 1).padStart(2, "0"); // Adding 1 as getMonth() is 0-indexed
-  //   const day = String(date.getDate()).padStart(2, "0");
-
-  //   return `${year}-${month}-${day}`;
-  // };
-
   const runPrediction = async () => {
     setLoading(true);
     try {
       const fileUrl = selectedFileUrl?.split("?")[0] ?? "";
 
-      // console.log("📤 Sending request with:", fileUrl, eventDate);
       const result = await modelPrediction(fileUrl);
 
       console.log("📥 Received result from API:", result);
@@ -96,18 +75,6 @@ const PredictPro = () => {
       if (result) {
         setJsonData(result ?? []);
       }
-      // if (result) {
-      //   setWeeks(result.weeks ?? []);
-      // }
-
-      // if (result?.future_predictions) {
-      //   setPredictionData(result.future_predictions ?? []); // Ensure it's never null
-      // }
-      // if (result?.weeks) {
-      //   setWeeks(result.weeks ?? []);
-      // } else {
-      //   console.warn("⚠️ Missing future_predictions in response:", result);
-      // }
     } catch (error) {
       console.error("❌ Prediction failed:", error);
     } finally {
@@ -147,48 +114,6 @@ const PredictPro = () => {
                     )}
                   </Select>
                 </div>
-                {/* <div className="mb-5">
-                  {selectedFileUrl && (
-                    <Card className="shadow-none rounded-none py-0 my-0 ">
-                      <div className="p-5">
-                        <p className="block text-sm py-0 mb-0 font-bold">
-                          Dataset URL:
-                        </p>
-                        <HR className="my-0" />
-
-                        <div>
-                          <div className=" text-sm break-all rounded  text-blue-400 py-0">
-                            <span>{selectedFileUrl}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </Card>
-                  )}
-                </div> */}
-
-                {/* <div className="mb-5">
-                  <div className=" mb-5">
-                    <div className="mb-2 block">
-                      <Label htmlFor="eventname" value="Date of the Event" />
-                    </div>
-                    <Datepicker
-                      value={selectedEventDate ?? undefined}
-                      onChange={handleEventDateChange}
-                    />
-                  </div>
-
-                  {selectedEventDate && (
-                    <div>
-                      <p className="block text-sm py-0 mb-0 font-bold  pb-2 ">
-                        Expected Date of Event:
-                      </p>
-                      <HR className="my-0" />
-                      <div className="text-sm  rounded  text-gray-500 p-2 pl-0">
-                        {selectedEventDate.toDateString()}
-                      </div>
-                    </div>
-                  )}
-                </div> */}
               </div>
               <div>
                 <Card className=" h-[650px] rounded-3xl shadow-lg">
@@ -208,7 +133,7 @@ const PredictPro = () => {
                   {loading ? (
                     <>
                       <Spinner aria-label="Loading spinner" size="sm" />
-                      <span className="pl-3">Ongoing prediction...</span>
+                      <span className="pl-3">{"Ongoing prediction..."}</span>
                     </>
                   ) : (
                     "Run Prediction"

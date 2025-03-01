@@ -86,10 +86,23 @@ const LogisticsGrowthChart = ({
 
   // Layout settings
   const layout: Partial<Plotly.Layout> = {
-    title: "Logistic Growth Model for Cumulative Registrations",
-    xaxis: { title: "Week" },
-    yaxis: { title: "Cumulative Registrations" },
-    legend: { orientation: "h" },
+    title: { text: "Logistic Growth Model for Cumulative Registrations" },
+    xaxis: { title: { text: "Week" } },
+    yaxis: { title: { text: "Cumulative Registrations" } },
+    legend: {
+      orientation: "v",
+      y: 1,
+      x: 0.05,
+      xanchor: "auto",
+      yanchor: "top",
+      font: { size: 10 },
+    },
+    height: 600,
+  };
+
+  const config = {
+    modeBarPosition: "right",
+    responsive: true,
   };
 
   if (!isClient) return <p>Loading chart...</p>;
@@ -98,6 +111,7 @@ const LogisticsGrowthChart = ({
     <PlotlyChart
       data={[actualData, logisticCurve, futurePredictions]}
       layout={layout}
+      config={config}
     />
   );
 };

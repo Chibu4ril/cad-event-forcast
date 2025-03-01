@@ -58,7 +58,7 @@ const PredictionChart = ({
   };
 
   return (
-    <div style={{ width: "100%", height: "400px" }}>
+    <div>
       <Line data={chartData} options={chartOptions} />
     </div>
   );

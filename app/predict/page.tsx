@@ -1,6 +1,14 @@
 "use client";
 
-import { Button, Card, Datepicker, HR, Label, Select } from "flowbite-react";
+import {
+  Button,
+  Card,
+  Datepicker,
+  HR,
+  Label,
+  Select,
+  Spinner,
+} from "flowbite-react";
 import { FooterBar } from "../components/footer";
 import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";
@@ -38,6 +46,8 @@ const PredictPro = () => {
   );
   const [selectedEventDate, setSelectedEventDate] = useState<Date | null>(null);
   const [eventDate, setEventDate] = useState<string>("");
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -82,6 +92,7 @@ const PredictPro = () => {
   };
 
   const runPrediction = async () => {
+    setLoading(true);
     try {
       const fileUrl = selectedFileUrl?.split("?")[0] ?? "";
 
@@ -107,6 +118,8 @@ const PredictPro = () => {
       // }
     } catch (error) {
       console.error("❌ Prediction failed:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -114,40 +127,20 @@ const PredictPro = () => {
     <div>
       <NavigationBar />
       <main className=" flex flex-col justify-between h-screen">
-        <div className="container mx-auto mt-20 lg:px-48 ">
+        <div className="container mx-auto mt-20 xl:px-28 ">
           <div className="mb-10 my-5">
             <h1 className="text-3xl font-bold">Event Forecast</h1>
           </div>
           <div className="grid grid-cols-4 gap-10">
             <div className="col-span-3">
-              <Card className="shadow-none">
-                <div className="grid-cols-1 grid p-2 gap-5">
-                  <Card className="p-3 shadow-none h-full">
-                    {/* {jsonData && jsonData.length > 0 ? (
-                      // <PredictionChart
-                      //   weeks={weeks}
-                      //   futurePredictions={predictionData}
-                      // />
-                      <LogisticsGrowthChart jsonData={jsonData} />
-                    ) : (
-                      <p>Loading prediction data...</p>
-                    )} */}
-
-                    {jsonData && <LogisticsGrowthChart jsonData={jsonData} />}
-                  </Card>
-                </div>
-              </Card>
-            </div>
-
-            <Card className="shadow-none border-none py-0  ">
-              <div className="">
+              <div className="grid grid-cols-2 gap-10">
                 <div className="mb-5">
                   <div className="mb-2 block">
-                    <Label htmlFor="datasets" value="Select a Datasets" />
+                    <Label htmlFor="datasets" value="Select a Dataset" />
                   </div>
                   <Select
                     id="datasets"
-                    className="mb-5"
+                    className="mb-5 w-full"
                     onChange={handleFileSelect}
                   >
                     <option value="">Select a dataset</option>
@@ -161,7 +154,8 @@ const PredictPro = () => {
                       <option disabled>No files found</option>
                     )}
                   </Select>
-
+                </div>
+                {/* <div className="mb-5">
                   {selectedFileUrl && (
                     <Card className="shadow-none rounded-none py-0 my-0 ">
                       <div className="p-5">
@@ -178,9 +172,9 @@ const PredictPro = () => {
                       </div>
                     </Card>
                   )}
-                </div>
+                </div> */}
 
-                <div className="mb-5">
+                {/* <div className="mb-5">
                   <div className=" mb-5">
                     <div className="mb-2 block">
                       <Label htmlFor="eventname" value="Date of the Event" />
@@ -202,16 +196,31 @@ const PredictPro = () => {
                       </div>
                     </div>
                   )}
-                </div>
+                </div> */}
               </div>
-            </Card>
+              <div>
+                <Card className=" h-[650px] rounded-3xl shadow-lg">
+                  {jsonData && <LogisticsGrowthChart jsonData={jsonData} />}
+                </Card>
+              </div>
+            </div>
+
+            <Card className="shadow-none border-none py-0  "></Card>
             {selectedFileUrl && (
               <div className="flex flex-col mt-4">
                 <Button
                   className="w-full bg-black enabled:hover:bg-gray-600 rounded-sm py-1"
                   onClick={runPrediction}
+                  disabled={loading}
                 >
-                  Run Prediction
+                  {loading ? (
+                    <>
+                      <Spinner aria-label="Loading spinner" size="sm" />
+                      <span className="pl-3">Ongoing prediction...</span>
+                    </>
+                  ) : (
+                    "Run Prediction"
+                  )}
                 </Button>
               </div>
             )}

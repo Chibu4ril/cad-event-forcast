@@ -26,7 +26,7 @@ export default function Home() {
                     href={"/predict"}
                     className="flex items-center bg-purple-600 hover:bg-purple-900 py-4 text-white px-7 "
                   >
-                    Start Data Analysis
+                    Start Prediction
                     <ChevronRight size={16} className="ml-1" />
                   </Link>
                 </div>

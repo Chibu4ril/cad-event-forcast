@@ -88,8 +88,7 @@ const PredictPro = () => {
     try {
       const fileUrl = selectedFileUrl?.split("?")[0] ?? "";
 
-      console.log("📤 Sending request with:", fileUrl);
-      // const result = await modelPrediction(fileUrl, eventDate);
+      // console.log("📤 Sending request with:", fileUrl, eventDate);
       const result = await modelPrediction(fileUrl);
 
       console.log("📥 Received result from API:", result);

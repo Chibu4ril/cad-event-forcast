@@ -1,5 +1,7 @@
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import Plot from "react-plotly.js";
+
+const PlotlyChart = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 interface LogisticGrowthData {
   x: number[]; // Array of values representing the x-axis
@@ -93,7 +95,7 @@ const LogisticsGrowthChart = ({
   if (!isClient) return <p>Loading chart...</p>;
 
   return (
-    <Plot
+    <PlotlyChart
       data={[actualData, logisticCurve, futurePredictions]}
       layout={layout}
     />

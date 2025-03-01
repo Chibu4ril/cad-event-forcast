@@ -37,7 +37,7 @@ const PredictPro = () => {
     undefined
   );
   // const [selectedEventDate, setSelectedEventDate] = useState<Date | null>(null);
-  const [eventDate, setEventDate] = useState<string>("");
+  // const [eventDate, setEventDate] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
 
@@ -88,8 +88,9 @@ const PredictPro = () => {
     try {
       const fileUrl = selectedFileUrl?.split("?")[0] ?? "";
 
-      console.log("📤 Sending request with:", fileUrl, eventDate);
-      const result = await modelPrediction(fileUrl, eventDate);
+      console.log("📤 Sending request with:", fileUrl);
+      // const result = await modelPrediction(fileUrl, eventDate);
+      const result = await modelPrediction(fileUrl);
 
       console.log("📥 Received result from API:", result);
 

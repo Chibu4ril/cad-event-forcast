@@ -5,14 +5,37 @@ import { FooterBar } from "../components/footer";
 import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";
 import { fetchUploadedFiles, modelPrediction } from "../api/api";
-import PredictionChart from "./plotting";
+// import PredictionChart from "./plotting";
+import LogisticsGrowthChart from "./plotly";
+
+interface LogisticGrowthData {
+  x: number[]; // Array of values representing the x-axis
+  y: number[]; // Array of actual data points corresponding to y
+  futureWeeks: number[]; // Array of future week numbers
+  futurePredictions: number[]; // Array of future predicted values
+  parameters: {
+    K: number; // Carrying capacity
+    N0: number; // Initial population or initial value
+    r: number; // Growth rate
+  };
+  weeks: string[]; // Array of strings representing weeks (e.g., 'Week 1', 'Week 2', ...)
+  metadata: {
+    final_predicted_registrations: number; // Final predicted registrations
+    prediction_accuracy_percent: number; // Prediction accuracy percentage
+    weeks_until_event: number; // Weeks until the event
+    initial_growth_rate_r: number; // Initial growth rate (before any adjustments)
+    adjusted_growth_rate_r: number; // Adjusted growth rate (after optimization)
+  };
+  logistic_growth_values: number[]; // Array of logistic growth values based on the logistic model
+}
 
 const PredictPro = () => {
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
-  const [predictionData, setPredictionData] = useState<number[]>([]);
-  const [weeks, setWeeks] = useState<string[]>([]);
+  const [jsonData, setJsonData] = useState<LogisticGrowthData | undefined>(
+    undefined
+  );
   const [selectedEventDate, setSelectedEventDate] = useState<Date | null>(null);
   const [eventDate, setEventDate] = useState<string>("");
 
@@ -30,10 +53,10 @@ const PredictPro = () => {
   }, []);
 
   useEffect(() => {
-    if (predictionData) {
-      console.log("📊 Updated predictionData:", predictionData);
+    if (jsonData) {
+      console.log("📊 Updated predictionData:", jsonData);
     }
-  }, [predictionData]);
+  }, [jsonData]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedFile = files.find((file) => file.name === event.target.value);
@@ -68,11 +91,11 @@ const PredictPro = () => {
       console.log("📥 Received result from API:", result);
 
       if (result) {
-        setPredictionData(result ?? []);
+        setJsonData(result ?? []);
       }
-      if (result) {
-        setWeeks(result.weeks ?? []);
-      }
+      // if (result) {
+      //   setWeeks(result.weeks ?? []);
+      // }
 
       // if (result?.future_predictions) {
       //   setPredictionData(result.future_predictions ?? []); // Ensure it's never null
@@ -100,14 +123,17 @@ const PredictPro = () => {
               <Card className="shadow-none">
                 <div className="grid-cols-1 grid p-2 gap-5">
                   <Card className="p-3 shadow-none h-full">
-                    {predictionData && predictionData.length > 0 ? (
-                      <PredictionChart
-                        weeks={weeks}
-                        futurePredictions={predictionData}
-                      />
+                    {/* {jsonData && jsonData.length > 0 ? (
+                      // <PredictionChart
+                      //   weeks={weeks}
+                      //   futurePredictions={predictionData}
+                      // />
+                      <LogisticsGrowthChart jsonData={jsonData} />
                     ) : (
                       <p>Loading prediction data...</p>
-                    )}
+                    )} */}
+
+                    {jsonData && <LogisticsGrowthChart jsonData={jsonData} />}
                   </Card>
                 </div>
               </Card>

@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Button,
-  Card,
-  Datepicker,
-  HR,
-  Label,
-  Select,
-  Spinner,
-} from "flowbite-react";
+import { Button, Card, Label, Select, Spinner } from "flowbite-react";
 import { FooterBar } from "../components/footer";
 import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";

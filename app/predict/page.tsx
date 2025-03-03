@@ -86,7 +86,7 @@ const PredictPro = () => {
     <div>
       <NavigationBar />
       <main className=" flex flex-col justify-between h-screen">
-        <div className="container mx-auto mt-20 xl:px-28 ">
+        <div className="container mx-auto mt-10 xl:px-28 ">
           <div className="mb-10 my-5">
             <h1 className="text-3xl font-bold">Event Forecast</h1>
           </div>
@@ -114,33 +114,45 @@ const PredictPro = () => {
                     )}
                   </Select>
                 </div>
+                {selectedFileUrl && (
+                  <div className="flex flex-col mt-7">
+                    <Button
+                      className="w-full bg-black enabled:hover:bg-gray-600 rounded-sm py-1"
+                      onClick={runPrediction}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <>
+                          <Spinner aria-label="Loading spinner" size="sm" />
+                          <span className="pl-3">
+                            {"Ongoing prediction..."}
+                          </span>
+                        </>
+                      ) : (
+                        "Run Prediction"
+                      )}
+                    </Button>
+                  </div>
+                )}
               </div>
               <div>
-                <Card className=" h-[650px] rounded-3xl shadow-lg">
-                  {jsonData && <LogisticsGrowthChart jsonData={jsonData} />}
-                </Card>
+                {jsonData && (
+                  <Card className=" h-[650px] rounded-3xl shadow-lg">
+                    <LogisticsGrowthChart jsonData={jsonData} />
+                  </Card>
+                )}
               </div>
             </div>
 
-            <Card className="shadow-none border-none py-0  "></Card>
-            {selectedFileUrl && (
-              <div className="flex flex-col mt-4">
-                <Button
-                  className="w-full bg-black enabled:hover:bg-gray-600 rounded-sm py-1"
-                  onClick={runPrediction}
-                  disabled={loading}
-                >
-                  {loading ? (
-                    <>
-                      <Spinner aria-label="Loading spinner" size="sm" />
-                      <span className="pl-3">{"Ongoing prediction..."}</span>
-                    </>
-                  ) : (
-                    "Run Prediction"
-                  )}
-                </Button>
-              </div>
-            )}
+            <Card href="#" className="max-w-sm p-5 rounded-xl shadow-xl">
+              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                Noteworthy technology acquisitions 2021
+              </h5>
+              <p className="font-normal text-gray-700 dark:text-gray-400">
+                Here are the biggest enterprise technology acquisitions of 2021
+                so far, in reverse chronological order.
+              </p>
+            </Card>
           </div>
         </div>
         <FooterBar />

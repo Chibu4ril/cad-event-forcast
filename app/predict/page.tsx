@@ -84,11 +84,11 @@ const PredictPro = () => {
   };
 
   const getAccuracyMessage = (accuracy: number) => {
-    if (accuracy < 85) {
+    if (accuracy < 50) {
       return `The prediction model has a low accuracy of ${accuracy}%. 
               This suggests that the data may not fully capture the expected growth, 
               or that there may be other factors affecting registration patterns.`;
-    } else if (accuracy < 95) {
+    } else if (accuracy < 75) {
       return `The prediction model has a moderate accuracy of ${accuracy}%. 
               While this provides a reasonable estimate, further validation may be needed to refine the predictions.`;
     } else {
@@ -185,9 +185,9 @@ const PredictPro = () => {
                     <div>
                       <h1
                         className={`text-4xl font-black tracking-tight ${
-                          jsonData.metadata.prediction_accuracy_percent < 85
+                          jsonData.metadata.prediction_accuracy_percent < 50
                             ? "text-red-500"
-                            : jsonData.metadata.prediction_accuracy_percent < 95
+                            : jsonData.metadata.prediction_accuracy_percent < 75
                             ? "text-yell-500"
                             : "text-lime-600"
                         }`}

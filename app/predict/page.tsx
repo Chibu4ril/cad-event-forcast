@@ -6,6 +6,7 @@ import { NavigationBar } from "../components/navbar";
 import { useEffect, useState } from "react";
 import { fetchUploadedFiles, modelPrediction } from "../api/api";
 import LogisticsGrowthChart from "./plotly";
+import { Info, TrendingUpDown } from "lucide-react";
 
 interface LogisticGrowthData {
   x: number[]; // Array of values representing the x-axis
@@ -82,6 +83,20 @@ const PredictPro = () => {
     }
   };
 
+  const getAccuracyMessage = (accuracy: number) => {
+    if (accuracy < 85) {
+      return `The prediction model has a low accuracy of ${accuracy}%. 
+              This suggests that the data may not fully capture the expected growth, 
+              or that there may be other factors affecting registration patterns.`;
+    } else if (accuracy < 95) {
+      return `The prediction model has a moderate accuracy of ${accuracy}%. 
+              While this provides a reasonable estimate, further validation may be needed to refine the predictions.`;
+    } else {
+      return `The prediction model is highly accurate with an accuracy of ${accuracy}%. 
+              This indicates that the model has closely followed the actual trends in registration.`;
+    }
+  };
+
   return (
     <div>
       <NavigationBar />
@@ -142,19 +157,87 @@ const PredictPro = () => {
                   </Card>
                 )}
               </div>
+
+              {jsonData && (
+                <Card className="p-5 w-full rounded-xl mt-5 mb-10 shadow-xl">
+                  <div className="flex text-blue-500">
+                    <Info className="me-2" size={40} />
+                    <div>
+                      <h5 className="text-3xl mb-2 font-bold tracking-tight">
+                        Prediction Accuracy Explanation
+                      </h5>
+
+                      <p className="font-normal text-lg text-gray-700 dark:text-gray-400">
+                        {getAccuracyMessage(
+                          jsonData.metadata.prediction_accuracy_percent
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              )}
             </div>
 
-            <Card href="#" className="max-w-sm p-5 rounded-xl shadow-xl">
-              <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                Noteworthy technology acquisitions 2021
-              </h5>
-              <p className="font-normal text-gray-700 dark:text-gray-400">
-                Here are the biggest enterprise technology acquisitions of 2021
-                so far, in reverse chronological order.
-              </p>
-            </Card>
+            <div>
+              {jsonData && (
+                <Card className="max-w-sm p-5  rounded-xl shadow-xl">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h1
+                        className={`text-4xl font-black tracking-tight ${
+                          jsonData.metadata.prediction_accuracy_percent < 85
+                            ? "text-red-500"
+                            : jsonData.metadata.prediction_accuracy_percent < 95
+                            ? "text-yell-500"
+                            : "text-lime-600"
+                        }`}
+                      >
+                        {`${jsonData.metadata.prediction_accuracy_percent}%`}
+                      </h1>
+                      <p className="font-normal text-gray-700 dark:text-gray-400">
+                        Prediction Accuracy
+                      </p>
+                    </div>
+
+                    <div className="bg-gray-100 p-4 rounded-xl">
+                      <TrendingUpDown
+                        size={32}
+                        className={`
+                          ${
+                            jsonData.metadata.prediction_accuracy_percent < 85
+                              ? "text-red-500"
+                              : jsonData.metadata.prediction_accuracy_percent <
+                                95
+                              ? "text-yell-500"
+                              : "text-lime-600"
+                          }`}
+                      />
+                    </div>
+                  </div>
+                </Card>
+              )}
+              {/* <Card href="#" className="max-w-sm p-5 rounded-xl my-5 shadow-xl">
+                <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  Noteworthy technology acquisitions 2021
+                </h5>
+                <p className="font-normal text-gray-700 dark:text-gray-400">
+                  Here are the biggest enterprise technology acquisitions of
+                  2021 so far, in reverse chronological order.
+                </p>
+              </Card>
+              <Card href="#" className="max-w-sm p-5 rounded-xl shadow-xl">
+                <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  Noteworthy technology acquisitions 2021
+                </h5>
+                <p className="font-normal text-gray-700 dark:text-gray-400">
+                  Here are the biggest enterprise technology acquisitions of
+                  2021 so far, in reverse chronological order.
+                </p>
+              </Card> */}
+            </div>
           </div>
         </div>
+
         <FooterBar />
       </main>
     </div>

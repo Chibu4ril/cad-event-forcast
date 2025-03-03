@@ -204,10 +204,10 @@ const PredictPro = () => {
                         size={32}
                         className={`
                           ${
-                            jsonData.metadata.prediction_accuracy_percent < 85
+                            jsonData.metadata.prediction_accuracy_percent < 50
                               ? "text-red-500"
                               : jsonData.metadata.prediction_accuracy_percent <
-                                95
+                                75
                               ? "text-yell-500"
                               : "text-lime-600"
                           }`}

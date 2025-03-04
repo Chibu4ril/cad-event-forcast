@@ -40,6 +40,7 @@ const HomeTable = () => {
         <Table.Head>
           <Table.HeadCell className="col-span-2">File name</Table.HeadCell>
           <Table.HeadCell>Url</Table.HeadCell>
+          <Table.HeadCell>Dataset Type</Table.HeadCell>
           <Table.HeadCell>Action</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">

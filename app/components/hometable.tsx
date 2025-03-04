@@ -12,12 +12,22 @@ const HomeTable = () => {
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+  const [uploads, setUploads] = useState<{ name: string; url: string }[]>([]);
+  const [trainingSets, setTrainingSets] = useState<
+    { name: string; filePathURL: string; fileDirectory: string }[]
+  >([]);
 
   useEffect(() => {
     setIsClient(true);
     const getFiles = async () => {
-      const uploadedFiles = await fetchUploadedFiles();
-      setFiles(uploadedFiles);
+      const { normal_files, datasets } = await fetchUploadedFiles();
+
+      const mergedFiles = [...normal_files, ...datasets];
+
+      setFiles(mergedFiles);
+
+      setUploads(normal_files);
+      setTrainingSets(datasets);
     };
 
     getFiles();
@@ -45,21 +55,50 @@ const HomeTable = () => {
         </Table.Head>
         <Table.Body className="divide-y">
           {files.length > 0 ? (
-            files.map((file) => (
+            files.map((file, index) => (
               <Table.Row
                 className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                key={file.name}
+                key={index}
               >
-                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                <Table.Cell className="whitespace-nowrap font-bold text-gray-900 dark:text-white">
                   {file.name}
                 </Table.Cell>
 
-                <Table.Cell className="truncate">{file.url}</Table.Cell>
+                <Table.Cell className="truncate ">
+                  {trainingSets.some((training) => training.name === file.name)
+                    ? trainingSets.find(
+                        (training) => training.name === file.name
+                      )?.filePathURL
+                    : file.url}
+                </Table.Cell>
+                <Table.Cell className="truncate">
+                  <span
+                    className={
+                      uploads.some((upload) => upload.name === file.name)
+                        ? "text-red-500"
+                        : "text-green-500"
+                    }
+                  >
+                    {uploads.some((upload) => upload.name === file.name)
+                      ? "Testing Set"
+                      : "Training Set"}
+                  </span>
+                </Table.Cell>
 
                 <Table.Cell>
                   <span
                     className="flex items-center hover:text-red-600"
-                    onClick={() => handleOpenModal(file.url)}
+                    onClick={() => {
+                      const fileUrl = trainingSets.some(
+                        (training) => training.name === file.name
+                      )
+                        ? trainingSets.find(
+                            (training) => training.name === file.name
+                          )?.filePathURL || ""
+                        : file.url || "";
+
+                      handleOpenModal(fileUrl);
+                    }}
                   >
                     <Trash2 size={14} />
                     <span className="ml-1 cursor-pointer">Delete</span>
@@ -69,7 +108,7 @@ const HomeTable = () => {
             ))
           ) : (
             <Table.Row className="flex justify-center items-center w-full">
-              <Table.Cell className="w-full py-4 text-center" rowSpan={3}>
+              <Table.Cell className="w-full py-4 text-center" colSpan={3}>
                 No files found
               </Table.Cell>
             </Table.Row>

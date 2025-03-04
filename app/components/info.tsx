@@ -22,7 +22,7 @@ export function InfoCard() {
                 </div>
               </div>
               <a
-                href=" publick/dataset_template.csv"
+                href=" public/dataset_template.csv"
                 className="ml-10 hover:bg-gray-100 p-2 rounded-md"
               >
                 <Download />

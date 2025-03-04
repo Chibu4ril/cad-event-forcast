@@ -1,25 +1,42 @@
 "use client";
 
-import { Alert, Button, Card, FileInput, Label } from "flowbite-react";
-import { handleFileChange } from "../actions";
+import {
+  Alert,
+  Button,
+  Card,
+  Checkbox,
+  FileInput,
+  Label,
+  Tooltip,
+} from "flowbite-react";
+import { handleDatasetUpload, handleFileChange } from "../actions";
 import { useEffect, useState } from "react";
-import { FileSpreadsheet, Frown, Smile, UploadCloud, X } from "lucide-react";
+import {
+  FileSpreadsheet,
+  Frown,
+  Info,
+  Smile,
+  UploadCloud,
+  X,
+} from "lucide-react";
 // import { fetchUploadedFiles } from "../api/api";
 
 export function UploadCard() {
   const [uploading, setUploading] = useState(false);
-
   const [uploadStatus, setUploadStatus] = useState<{
     message: string;
     success: boolean;
   } | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [checkbox, setCheckbox] = useState(false);
+  const [dataset, setDataset] = useState<File | null>(null);
 
   // Function to handle file selection
   const onFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type === "text/csv" && file.size <= 1024 * 1024) {
       setSelectedFile(file);
+      setDataset(file);
     } else {
       setSelectedFile(null);
       setUploadStatus({
@@ -28,6 +45,10 @@ export function UploadCard() {
       });
       return;
     }
+  };
+
+  const handleCheckbox = () => {
+    setCheckbox((prev) => !prev);
   };
 
   const handleUpload = async () => {
@@ -39,9 +60,16 @@ export function UploadCard() {
       return;
     }
 
+    let error;
     setUploading(true);
     const fileName = `${selectedFile.name}`;
-    const { error } = await handleFileChange(selectedFile, fileName);
+    if (checkbox && dataset) {
+      ({ error } = await handleDatasetUpload(dataset, fileName));
+      console.log("dataset folder selected");
+    } else {
+      ({ error } = await handleFileChange(selectedFile, fileName));
+      // console.log("random upload");
+    }
 
     if (error) {
       setUploadStatus({
@@ -64,7 +92,7 @@ export function UploadCard() {
       const timer = setTimeout(() => {
         setUploadStatus(null);
         window.location.reload();
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -92,27 +120,45 @@ export function UploadCard() {
           </Alert>
         </div>
       )}
-      <div className="flex w-full items-center justify-center">
-        <Label
-          htmlFor="dropzone-file"
-          className="flex h-96 w-full cursor-pointer rounded-xl flex-col items-center justify-center border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-        >
-          <div className="flex flex-col items-center justify-center pb-6 pt-5">
-            <UploadCloud size={32} />
-            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-              <span className="font-semibold">Click to upload</span> or drag and
-              drop
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              CSV files Only! (MAX. 1mb)
-            </p>
-          </div>
-          <FileInput
-            id="dropzone-file"
-            className="hidden"
-            onChange={onFileSelect}
-          />
-        </Label>
+      <div>
+        <div className="flex items-center gap-2 mb-5">
+          <Checkbox id="accept" onChange={handleCheckbox} checked={checkbox} />
+          <Label htmlFor="accept" className="flex">
+            <span className="flex items-center text-teal-500 hover:underline font-bold">
+              Uploading a training dataset? Check this box!
+              <Tooltip
+                content="Files will be added to the list of training data sets when this box is checked"
+                className=""
+              >
+                <Info size={16} />
+              </Tooltip>
+            </span>
+          </Label>
+        </div>
+
+        <div className="flex w-full items-center justify-center">
+          <Label
+            htmlFor="dropzone-file"
+            className="flex h-96 w-full cursor-pointer rounded-xl flex-col items-center justify-center border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+          >
+            <div className="flex flex-col items-center justify-center pb-6 pt-5">
+              <UploadCloud size={32} />
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">
+                  Click and select a file to upload.
+                </span>
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                CSV files Only! (MAX. 1mb)
+              </p>
+            </div>
+            <FileInput
+              id="dropzone-file"
+              className="hidden"
+              onChange={onFileSelect}
+            />
+          </Label>
+        </div>
       </div>
 
       <div className="my-10">

@@ -1,15 +1,33 @@
 "use client";
 
-export const fetchUploadedFiles = async () => {
+interface File {
+  name: string;
+  url: string;
+  filePathURL: string;
+  fileDirectory: string;
+}
+
+export const fetchUploadedFiles = async (): Promise<{
+  normal_files: File[];
+  datasets: File[];
+}> => {
   try {
     const response = await fetch(
       "https://cad-backend-lcaa.onrender.com/api/files"
     );
     const data = await response.json();
-    return data.files || [];
+    if (!data || typeof data !== "object") {
+      console.error("Invalid API response:", data);
+      return { normal_files: [], datasets: [] };
+    }
+
+    return {
+      normal_files: Array.isArray(data.normal_files) ? data.normal_files : [],
+      datasets: Array.isArray(data.datasets) ? data.datasets : [],
+    };
   } catch (error) {
     console.error("Error fetching files:", error);
-    return [];
+    return { normal_files: [], datasets: [] };
   }
 };
 

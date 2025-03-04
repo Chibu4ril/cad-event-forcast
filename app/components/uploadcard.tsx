@@ -30,7 +30,6 @@ export function UploadCard() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [checkbox, setCheckbox] = useState(false);
   const [dataset, setDataset] = useState<File | null>(null);
-  const [fileType, setFileType] = useState(false);
 
   // Function to handle file selection
   const onFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,12 +65,10 @@ export function UploadCard() {
     const fileName = `${selectedFile.name}`;
     if (checkbox && dataset) {
       ({ error } = await handleDatasetUpload(dataset, fileName));
-      setFileType(true);
       console.log("dataset folder selected");
     } else {
       ({ error } = await handleFileChange(selectedFile, fileName));
       // console.log("random upload");
-      setFileType(false);
     }
 
     if (error) {
@@ -128,12 +125,12 @@ export function UploadCard() {
           <Checkbox id="accept" onChange={handleCheckbox} checked={checkbox} />
           <Label htmlFor="accept" className="flex">
             <span className="flex items-center text-teal-500 hover:underline font-bold">
-              Uploading a training dataset? Check this box!{" "}
+              Uploading a training dataset? Check this box!
               <Tooltip
                 content="Files will be added to the list of training data sets when this box is checked"
-                className="ms-1"
+                className=""
               >
-                <Info size={24} />
+                <Info size={16} />
               </Tooltip>
             </span>
           </Label>

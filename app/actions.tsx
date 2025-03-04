@@ -36,13 +36,26 @@ export const handleFileDelete = async (fileUrl: string) => {
       return;
     }
 
-    const { error } = await supabase.storage.from("uploads").remove([filename]);
+    // Check which bucket the file belongs to based on the URL
+    let bucket = "";
+    if (fileUrl.includes("uploads")) {
+      bucket = "uploads";
+    } else if (fileUrl.includes("training_set")) {
+      bucket = "training_set";
+    }
+
+    if (!bucket) {
+      console.error("Error: File does not belong to a known bucket");
+      return;
+    }
+
+    const { error } = await supabase.storage.from(bucket).remove([filename]);
 
     if (error) {
       console.error("Error deleting file from Supabase:", error.message);
     } else {
-      // console.log("File deleted successfully:", filename);
-      window.location.reload();
+      console.log(`File deleted successfully from ${bucket}:`, filename);
+      window.location.reload(); // Optionally refresh the page after deleting the file
     }
   } catch (err) {
     console.error("Unexpected error:", err);

@@ -39,18 +39,18 @@ const PredictPro = () => {
 
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setIsClient(true);
-    const getFiles = async () => {
-      try {
-        const uploadedFiles = await fetchUploadedFiles();
-        setFiles(uploadedFiles);
-      } catch (error) {
-        console.error("Error fetching files:", error);
-      }
-    };
-    getFiles();
-  }, []);
+  // useEffect(() => {
+  //   setIsClient(true);
+  //   const getFiles = async () => {
+  //     try {
+  //       const uploadedFiles = await fetchUploadedFiles();
+  //       setFiles(uploadedFiles);
+  //     } catch (error) {
+  //       console.error("Error fetching files:", error);
+  //     }
+  //   };
+  //   getFiles();
+  // }, []);
 
   useEffect(() => {
     if (jsonData) {

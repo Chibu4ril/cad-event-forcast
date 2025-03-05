@@ -25,9 +25,9 @@ interface LogisticGrowthData {
 }
 
 const LogisticsGrowthChart = ({
-  jsonData,
+  jsonDataList,
 }: {
-  jsonData: LogisticGrowthData;
+  jsonDataList: LogisticGrowthData[]; // Accepts an array of data for multiple files
 }) => {
   const [isClient, setIsClient] = useState(false);
 
@@ -45,43 +45,69 @@ const LogisticsGrowthChart = ({
     return K / (1 + ((K - N0) / N0) * Math.exp(-r * t));
   };
 
-  // Actual Data
-  const actualData = {
-    x: jsonData.x,
-    y: jsonData.y,
-    mode: "markers",
-    name: "Actual Data",
-    marker: { color: "blue" },
-  };
+  // Generate traces for each dataset
+  const generateTraces = () => {
+    const traces = jsonDataList.map((jsonData, index) => {
+      // Actual Data
+      const actualData = {
+        x: jsonData.x,
+        y: jsonData.y,
+        mode: "markers",
+        name: `Actual Data File ${index + 1}`,
+        marker: {
+          color: `rgb(${(index * 50) % 255}, ${(index * 100) % 255}, ${
+            (index * 150) % 255
+          })`,
+        }, // Unique color
+      };
 
-  // Logistic Growth Curve (Fit Line)
-  const logisticCurveX = jsonData.x;
+      // Logistic Growth Curve (Fit Line)
+      const logisticCurveX = jsonData.x;
+      const logisticCurveY = logisticCurveX.map((t) =>
+        logisticGrowth(
+          t,
+          jsonData.parameters.K,
+          jsonData.parameters.N0,
+          jsonData.parameters.r
+        )
+      );
+      const logisticCurve = {
+        x: logisticCurveX,
+        y: logisticCurveY,
+        mode: "lines",
+        name: `Fitted Logistic Curve File ${index + 1}`,
+        line: {
+          color: `rgb(${(index * 50) % 255}, ${(index * 100) % 255}, ${
+            (index * 150) % 255
+          })`,
+        },
+      };
 
-  const logisticCurveY = logisticCurveX.map((t) =>
-    logisticGrowth(
-      t,
-      jsonData.parameters.K,
-      jsonData.parameters.N0,
-      jsonData.parameters.r
-    )
-  );
+      // Future Predictions
+      const futurePredictions = {
+        x: jsonData.futureWeeks,
+        y: jsonData.futurePredictions,
+        mode: "lines+markers",
+        name: `Future Predictions File ${index + 1}`,
+        line: {
+          dash: "dash",
+          color: `rgb(${(index * 50) % 255}, ${(index * 100) % 255}, ${
+            (index * 150) % 255
+          })`,
+        },
+        marker: {
+          color: `rgb(${(index * 50) % 255}, ${(index * 100) % 255}, ${
+            (index * 150) % 255
+          })`,
+          symbol: "x",
+        },
+      };
 
-  const logisticCurve = {
-    x: logisticCurveX,
-    y: logisticCurveY,
-    mode: "lines",
-    name: "Fitted Logistic Curve",
-    line: { color: "green" },
-  };
+      return [actualData, logisticCurve, futurePredictions]; // Return the traces for this file
+    });
 
-  // Future Predictions
-  const futurePredictions = {
-    x: jsonData.futureWeeks,
-    y: jsonData.futurePredictions,
-    mode: "lines+markers",
-    name: "Future Predictions",
-    line: { dash: "dash", color: "red" },
-    marker: { color: "red", symbol: "x" },
+    // Flatten the array of traces and return
+    return traces.flat();
   };
 
   // Layout settings
@@ -109,7 +135,7 @@ const LogisticsGrowthChart = ({
 
   return (
     <PlotlyChart
-      data={[actualData, logisticCurve, futurePredictions]}
+      data={generateTraces()} // Use the function to generate all traces
       layout={layout}
       config={config}
     />

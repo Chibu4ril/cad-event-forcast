@@ -125,7 +125,7 @@ export function UploadCard() {
           <Checkbox id="accept" onChange={handleCheckbox} checked={checkbox} />
           <Label htmlFor="accept" className="flex">
             <span className="flex items-center text-teal-500 hover:underline font-bold">
-              Uploading a training dataset? Check this box!
+              Uploading a <u> {` TRAINING DATASET `}</u> ? Check this box!
               <Tooltip
                 content="Files will be added to the list of training data sets when this box is checked"
                 className=""

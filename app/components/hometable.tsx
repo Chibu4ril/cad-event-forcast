@@ -80,8 +80,8 @@ const HomeTable = () => {
                     }
                   >
                     {uploads.some((upload) => upload.name === file.name)
-                      ? "Testing Set"
-                      : "Training Set"}
+                      ? "TESTING SET"
+                      : "TRAINING SET"}
                   </span>
                 </Table.Cell>
 

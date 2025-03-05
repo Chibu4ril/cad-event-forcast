@@ -33,7 +33,7 @@ export const fetchUploadedFiles = async (): Promise<{
 
 export const modelPrediction = async (selectedFileUrl: string | null) => {
   if (!selectedFileUrl) {
-    console.error("⚠️ Dataset must be selected.");
+    console.error("⚠️ Testing Dataset must be selected.");
     return;
   }
 

@@ -32,10 +32,10 @@ interface LogisticGrowthData {
 const PredictPro = () => {
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
-  const [uploads, setUploads] = useState<{ name: string; url: string }[]>([]);
-  const [trainingSets, setTrainingSets] = useState<
-    { name: string; filePathURL: string; fileDirectory: string }[]
-  >([]);
+  // const [uploads, setUploads] = useState<{ name: string; url: string }[]>([]);
+  // const [trainingSets, setTrainingSets] = useState<
+  //   { name: string; filePathURL: string; fileDirectory: string }[]
+  // >([]);
   const [isClient, setIsClient] = useState(false);
   const [jsonData, setJsonData] = useState<LogisticGrowthData | undefined>(
     undefined
@@ -54,9 +54,9 @@ const PredictPro = () => {
 
         setFiles(mergedFiles);
 
-        setUploads(normal_files);
+        // setUploads(normal_files);
 
-        setTrainingSets(datasets);
+        // setTrainingSets(datasets);
       } catch (error) {
         console.error("Error fetching files:", error);
       }
@@ -80,16 +80,21 @@ const PredictPro = () => {
     setLoading(true);
     try {
       const fileUrl = selectedFileUrl?.split("?")[0] ?? "";
-      const datasetPath = trainingSets[0]?.filePathURL.split("?")[0] ?? ""; // Clean the first dataset URL
-      console.log("Dataset Path:", datasetPath);
+      // const datasetPath =
+      //   trainingSets[0]?.filePathURL
+      //     .split("?")[0]
+      //     .split("/")
+      //     .slice(0, -1) // Remove the last part (file name)
+      //     .join("/") ?? ""; // Clean the first dataset URL
+      // // console.log("Dataset Path:", datasetPath);
 
-      // const result = await modelPrediction(fileUrl);
+      const result = await modelPrediction(fileUrl);
 
-      // console.log("📥 Received result from API:", result);
+      console.log("📥 Received result from API:", result);
 
-      // if (result) {
-      //   setJsonData(result ?? []);
-      // }
+      if (result) {
+        setJsonData(result ?? []);
+      }
     } catch (error) {
       console.error("❌ Prediction failed:", error);
     } finally {
@@ -124,7 +129,10 @@ const PredictPro = () => {
               <div className="grid grid-cols-2 gap-10">
                 <div className="mb-5">
                   <div className="mb-2 block">
-                    <Label htmlFor="datasets" value="Select a Dataset" />
+                    <Label
+                      htmlFor="datasets"
+                      value="Select a Testing Dataset"
+                    />
                   </div>
                   <Select
                     id="datasets"

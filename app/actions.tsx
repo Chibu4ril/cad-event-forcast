@@ -7,25 +7,59 @@ const supabase = createBrowserClient(
 );
 
 export const handleFileChange = async (file: File, fileName: string) => {
-  const { error } = await supabase.storage
-    .from("uploads")
-    .upload(`${fileName}`, file, { upsert: true });
+  try {
+    const { data: existingFiles, error: listError } = await supabase.storage
+      .from("uploads")
+      .list("", { search: fileName });
 
-  if (error) {
-    return { error };
+    if (listError) {
+      console.error("Error checking for existing file:", listError.message);
+      return { error: listError };
+    }
+
+    if (existingFiles && existingFiles.some((f) => f.name === fileName)) {
+      return { error: "File already exists in Supabase storage." };
+    }
+    const { error } = await supabase.storage
+      .from("uploads")
+      .upload(`${fileName}`, file, { upsert: true });
+
+    if (error) {
+      return { error };
+    }
+
+    return { filePath: `uploads/${fileName}` };
+  } catch (error) {
+    console.error("Unexpected error during file upload:", error);
+    return { error: "Unexpected error occurred" };
   }
-
-  return { filePath: `uploads/${fileName}` };
 };
 
 export const handleDatasetUpload = async (file: File, fileName: string) => {
-  const { error } = await supabase.storage
-    .from("training_set")
-    .upload(`${fileName}`, file, { upsert: true });
-  if (error) {
-    return { error };
+  try {
+    const { data: existingFiles, error: listError } = await supabase.storage
+      .from("training_set")
+      .list("", { search: fileName });
+
+    if (listError) {
+      console.error("Error checking for existing file:", listError.message);
+      return { error: listError };
+    }
+
+    if (existingFiles && existingFiles.some((f) => f.name === fileName)) {
+      return { error: "File already exists in Supabase storage." };
+    }
+    const { error } = await supabase.storage
+      .from("training_set")
+      .upload(`${fileName}`, file, { upsert: true });
+    if (error) {
+      return { error };
+    }
+    return { filePath: `training_set` };
+  } catch (error) {
+    console.error("Unexpected error during file upload:", error);
+    return { error: "Unexpected error occurred" };
   }
-  return { filePath: `training_set` };
 };
 
 export const handleFileDelete = async (fileUrl: string) => {

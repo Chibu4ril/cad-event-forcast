@@ -73,7 +73,7 @@ export function UploadCard() {
 
     if (error) {
       setUploadStatus({
-        message: `${error.message}`,
+        message: typeof error === "string" ? error : error.message,
         success: false,
       });
     } else {

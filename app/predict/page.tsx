@@ -32,6 +32,10 @@ interface LogisticGrowthData {
 const PredictPro = () => {
   const [files, setFiles] = useState<{ name: string; url: string }[]>([]);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
+  const [uploads, setUploads] = useState<{ name: string; url: string }[]>([]);
+  const [trainingSets, setTrainingSets] = useState<
+    { name: string; filePathURL: string; fileDirectory: string }[]
+  >([]);
   const [isClient, setIsClient] = useState(false);
   const [jsonData, setJsonData] = useState<LogisticGrowthData | undefined>(
     undefined
@@ -39,18 +43,26 @@ const PredictPro = () => {
 
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   setIsClient(true);
-  //   const getFiles = async () => {
-  //     try {
-  //       const uploadedFiles = await fetchUploadedFiles();
-  //       setFiles(uploadedFiles);
-  //     } catch (error) {
-  //       console.error("Error fetching files:", error);
-  //     }
-  //   };
-  //   getFiles();
-  // }, []);
+  useEffect(() => {
+    setIsClient(true);
+    const getFiles = async () => {
+      try {
+        const { normal_files, datasets } = await fetchUploadedFiles();
+        // console.log(datasets);
+
+        const mergedFiles = [...normal_files, ...datasets];
+
+        setFiles(mergedFiles);
+
+        setUploads(normal_files);
+
+        setTrainingSets(datasets);
+      } catch (error) {
+        console.error("Error fetching files:", error);
+      }
+    };
+    getFiles();
+  }, []);
 
   useEffect(() => {
     if (jsonData) {
@@ -68,14 +80,16 @@ const PredictPro = () => {
     setLoading(true);
     try {
       const fileUrl = selectedFileUrl?.split("?")[0] ?? "";
+      const datasetPath = trainingSets[0]?.filePathURL.split("?")[0] ?? ""; // Clean the first dataset URL
+      console.log("Dataset Path:", datasetPath);
 
-      const result = await modelPrediction(fileUrl);
+      // const result = await modelPrediction(fileUrl);
 
-      console.log("📥 Received result from API:", result);
+      // console.log("📥 Received result from API:", result);
 
-      if (result) {
-        setJsonData(result ?? []);
-      }
+      // if (result) {
+      //   setJsonData(result ?? []);
+      // }
     } catch (error) {
       console.error("❌ Prediction failed:", error);
     } finally {
@@ -119,11 +133,15 @@ const PredictPro = () => {
                   >
                     <option value="">Select a dataset</option>
                     {files.length > 0 ? (
-                      files.map((file) => (
-                        <option key={file.name} value={file.name}>
-                          {file.name}
-                        </option>
-                      ))
+                      files
+                        .filter(
+                          (file) => file.url && file.url.includes("uploads")
+                        )
+                        .map((file) => (
+                          <option key={file.name} value={file.name}>
+                            {file.name}
+                          </option>
+                        ))
                     ) : (
                       <option disabled>No files found</option>
                     )}

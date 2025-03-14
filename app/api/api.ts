@@ -49,7 +49,7 @@ export const modelPrediction = async (selectedFileUrl: string | null) => {
       }
     );
 
-    console.log("🚀 Raw Response:", response);
+    // console.log("🚀 Raw Response:", response);
 
     if (!response.ok) {
       const errorText = await response.text(); // Read error response body
@@ -58,7 +58,13 @@ export const modelPrediction = async (selectedFileUrl: string | null) => {
     }
 
     const result = await response.json();
-    console.log("📥 Parsed JSON Result:", result);
+
+    // const jsonDataOutput = result;
+    // console.log(jsonDataOutput);
+
+    // console.log("📥 Parsed JSON Result:", jsonDataOutput);
+
+    // return jsonDataOutput;
 
     return result; // Return result for further processing
   } catch (error) {

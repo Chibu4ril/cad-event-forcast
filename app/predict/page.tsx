@@ -49,10 +49,10 @@ const PredictPro = () => {
     setIsClient(true);
     const getFiles = async () => {
       try {
-        const { normal_files } = await fetchUploadedFiles();
+        const { normal_files, datasets } = await fetchUploadedFiles();
         // console.log(datasets);
 
-        const mergedFiles = [...normal_files];
+        const mergedFiles = [...normal_files, ...datasets];
 
         setFiles(mergedFiles);
 
@@ -82,13 +82,13 @@ const PredictPro = () => {
     setLoading(true);
     try {
       const fileUrl = selectedFileUrl?.split("?")[0] ?? "";
-      // const datasetPath =
-      //   trainingSets[0]?.filePathURL
-      //     .split("?")[0]
-      //     .split("/")
-      //     .slice(0, -1) // Remove the last part (file name)
-      //     .join("/") ?? ""; // Clean the first dataset URL
-      // // console.log("Dataset Path:", datasetPath);
+      const datasetPath =
+        trainingSets[0]?.filePathURL
+          .split("?")[0]
+          .split("/")
+          .slice(0, -1) // Remove the last part (file name)
+          .join("/") ?? ""; // Clean the first dataset URL
+      // console.log("Dataset Path:", datasetPath);
 
       const result = await modelPrediction(fileUrl);
 
@@ -144,9 +144,7 @@ const PredictPro = () => {
                     <option value="">Select a dataset</option>
                     {files.length > 0 ? (
                       files
-                        .filter(
-                          (file) => file.url && file.url.includes("uploads")
-                        )
+                        .filter((file) => file.url)
                         .map((file) => (
                           <option key={file.name} value={file.name}>
                             {file.name}
@@ -157,43 +155,36 @@ const PredictPro = () => {
                     )}
                   </Select>
                 </div>
-                {/* {selectedFileUrl && ( */}
-                <div className="flex flex-col mt-7">
-                  <Button
-                    className="w-full bg-black enabled:hover:bg-gray-600 rounded-sm py-1"
-                    onClick={runPrediction}
-                    disabled={loading}
-                  >
-                    {/* {loading ? (
+                {selectedFileUrl && (
+                  <div className="flex flex-col mt-7">
+                    <Button
+                      className="w-full bg-black enabled:hover:bg-gray-600 rounded-sm py-1"
+                      onClick={runPrediction}
+                      disabled={loading}
+                    >
+                      {loading ? (
                         <>
                           <Spinner aria-label="Loading spinner" size="sm" />
                           <span className="pl-3">
                             {"Ongoing prediction..."}
                           </span>
                         </>
-                      ) : ( */}
-                    "Run Prediction"
-                    {/* )} */}
-                  </Button>
-                </div>
-                {/* )} */}
+                      ) : (
+                        "Run Prediction"
+                      )}
+                    </Button>
+                  </div>
+                )}
               </div>
               <div>
-                {/* {jsonData && ( */}
-                <Card className=" h-[650px] rounded-3xl shadow-lg">
-                  {/* <LogisticsGrowthChart jsonData={jsonData} /> */}
-                  <Image
-                    src={chartt}
-                    alt=""
-                    height={1000}
-                    width={1000}
-                    className="object-cover max-h-fit max-w-fit"
-                  />
-                </Card>
-                {/* )} */}
+                {jsonData && (
+                  <Card className=" h-[650px] rounded-3xl shadow-lg">
+                    <LogisticsGrowthChart jsonData={jsonData} />
+                  </Card>
+                )}
               </div>
 
-              {/* {jsonData && (
+              {jsonData && (
                 <Card className="p-5 w-full rounded-xl mt-5 mb-10 shadow-xl">
                   <div className="flex text-blue-500">
                     <Info className="me-2" size={40} />
@@ -210,28 +201,30 @@ const PredictPro = () => {
                     </div>
                   </div>
                 </Card>
-              )} */}
+              )}
             </div>
 
             <div>
-              {/* {jsonData && ( */}
-              <Card className="max-w-sm p-5  rounded-xl shadow-xl">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h1 className="text-4xl font-black tracking-tight text-lime-600">
-                      85%
-                    </h1>
-                    <p className="font-normal text-gray-700 dark:text-gray-400">
-                      Prediction Accuracy
-                    </p>
-                  </div>
+              {jsonData && (
+                <Card className="max-w-sm p-5  rounded-xl shadow-xl">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h1 className="text-4xl font-black tracking-tight text-lime-600">
+                        {getAccuracyMessage(
+                          jsonData.metadata.prediction_accuracy_percent
+                        )}
+                      </h1>
+                      <p className="font-normal text-gray-700 dark:text-gray-400">
+                        Prediction Accuracy
+                      </p>
+                    </div>
 
-                  <div className="bg-gray-100 p-4 rounded-xl">
-                    <TrendingUpDown size={32} className={"text-lime-600"} />
+                    <div className="bg-gray-100 p-4 rounded-xl">
+                      <TrendingUpDown size={32} className={"text-lime-600"} />
+                    </div>
                   </div>
-                </div>
-              </Card>
-              {/* )} */}
+                </Card>
+              )}
             </div>
           </div>
         </div>

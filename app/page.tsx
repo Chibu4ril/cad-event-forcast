@@ -38,7 +38,7 @@ export default function Home() {
             </div>
 
             <div>
-              <div>
+              <div className="flex justify-between">
                 <h3 className="mb-4 font-bold uppercase ">Uploaded Datasets</h3>
               </div>
               <div className="overflow-x-auto">

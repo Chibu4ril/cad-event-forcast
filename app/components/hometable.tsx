@@ -46,6 +46,14 @@ const HomeTable = () => {
 
   return (
     <div>
+      <div className="flex justify-end mb-5">
+        {isClient && (
+          <p>
+            Countdown: <span id="countdown">1:00</span>
+          </p>
+        )}
+      </div>
+
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell className="col-span-2">File name</Table.HeadCell>

@@ -13,21 +13,21 @@ const HomeTable = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string | null>(null);
   const [uploads, setUploads] = useState<{ name: string; url: string }[]>([]);
-  const [trainingSets, setTrainingSets] = useState<
-    { name: string; filePathURL: string; fileDirectory: string }[]
-  >([]);
+  // const [trainingSets, setTrainingSets] = useState<
+  //   { name: string; filePathURL: string; fileDirectory: string }[]
+  // >([]);
 
   useEffect(() => {
     setIsClient(true);
     const getFiles = async () => {
-      const { normal_files, datasets } = await fetchUploadedFiles();
+      const { normal_files } = await fetchUploadedFiles();
 
-      const mergedFiles = [...normal_files, ...datasets];
+      const mergedFiles = [...normal_files];
 
       setFiles(mergedFiles);
 
       setUploads(normal_files);
-      setTrainingSets(datasets);
+      // setTrainingSets(datasets);
     };
 
     getFiles();
@@ -64,24 +64,18 @@ const HomeTable = () => {
                   {file.name}
                 </Table.Cell>
 
-                <Table.Cell className="truncate ">
-                  {trainingSets.some((training) => training.name === file.name)
-                    ? trainingSets.find(
-                        (training) => training.name === file.name
-                      )?.filePathURL
-                    : file.url}
-                </Table.Cell>
+                <Table.Cell className="truncate ">{file.url}</Table.Cell>
                 <Table.Cell className="truncate">
                   <span
                     className={
                       uploads.some((upload) => upload.name === file.name)
-                        ? "text-red-500"
-                        : "text-green-500"
+                        ? "text-lime-500"
+                        : "text-lime-500"
                     }
                   >
                     {uploads.some((upload) => upload.name === file.name)
                       ? "TESTING SET"
-                      : "TRAINING SET"}
+                      : ""}
                   </span>
                 </Table.Cell>
 
@@ -89,12 +83,12 @@ const HomeTable = () => {
                   <span
                     className="flex items-center hover:text-red-600"
                     onClick={() => {
-                      const fileUrl = trainingSets.some(
+                      const fileUrl = uploads.some(
                         (training) => training.name === file.name
                       )
-                        ? trainingSets.find(
+                        ? uploads.find(
                             (training) => training.name === file.name
-                          )?.filePathURL || ""
+                          )?.name || ""
                         : file.url || "";
 
                       handleOpenModal(fileUrl);

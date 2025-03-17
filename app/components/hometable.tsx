@@ -28,6 +28,9 @@ const HomeTable = () => {
         if (Array.isArray(result)) {
           // If API returns an array directly, just use it
           setFiles(result);
+
+          setUploads(result);
+          setTrainingSets(result);
         } else if (
           result &&
           typeof result === "object" &&
@@ -35,6 +38,8 @@ const HomeTable = () => {
         ) {
           // If API returns { files: [...] }, extract files
           setFiles(result.files);
+          setUploads(result.files);
+          setTrainingSets(result.files);
         } else {
           console.error("Unexpected API response format:", result);
           setFiles([]); // Default to empty array to avoid breaking UI

@@ -9,7 +9,7 @@ interface File {
 
 export const fetchUploadedFiles = async (): Promise<{
   normal_files: File[];
-  datasets: File[];
+  // datasets: File[];
 }> => {
   try {
     const response = await fetch(
@@ -18,16 +18,18 @@ export const fetchUploadedFiles = async (): Promise<{
     const data = await response.json();
     if (!data || typeof data !== "object") {
       console.error("Invalid API response:", data);
-      return { normal_files: [], datasets: [] };
+      return { normal_files: [] };
     }
+    // return { normal_files: [], datasets: [] };
 
     return {
       normal_files: Array.isArray(data.normal_files) ? data.normal_files : [],
-      datasets: Array.isArray(data.datasets) ? data.datasets : [],
+      // datasets: Array.isArray(data.datasets) ? data.datasets : [],
     };
   } catch (error) {
     console.error("Error fetching files:", error);
-    return { normal_files: [], datasets: [] };
+    return { normal_files: [] };
+    // return { normal_files: [], datasets: [] };
   }
 };
 

@@ -1,41 +1,21 @@
 "use client";
 
-interface File {
-  name: string;
-  url: string;
-  filePathURL: string;
-  fileDirectory: string;
-}
-
-export const fetchUploadedFiles = async (): Promise<{
-  normal_files: File[];
-  // datasets: File[];
-}> => {
+export const fetchUploadedFiles = async () => {
   try {
     const response = await fetch(
       "https://cad-backend-lcaa.onrender.com/api/files"
     );
     const data = await response.json();
-    if (!data || typeof data !== "object") {
-      console.error("Invalid API response:", data);
-      return { normal_files: [] };
-    }
-    // return { normal_files: [], datasets: [] };
-
-    return {
-      normal_files: Array.isArray(data.normal_files) ? data.normal_files : [],
-      // datasets: Array.isArray(data.datasets) ? data.datasets : [],
-    };
+    return data.files || [];
   } catch (error) {
     console.error("Error fetching files:", error);
-    return { normal_files: [] };
-    // return { normal_files: [], datasets: [] };
+    return [];
   }
 };
 
 export const modelPrediction = async (selectedFileUrl: string | null) => {
   if (!selectedFileUrl) {
-    console.error("⚠️ Testing Dataset must be selected.");
+    console.error("⚠️ Dataset must be selected.");
     return;
   }
 

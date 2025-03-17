@@ -73,7 +73,7 @@ const HomeTable = () => {
     checkServer();
     const interval = setInterval(checkServer, 10000);
 
-    // return () => clearInterval(interval);
+    () => clearInterval(interval);
 
     getFiles();
   }, []);

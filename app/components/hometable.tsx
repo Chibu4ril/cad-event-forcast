@@ -92,8 +92,8 @@ const HomeTable = () => {
 
   return (
     <div>
-      <div className="flex justify-end text-sm mb-5">
-        Backend Status: <span className="text-xs"> {` ${status}`}</span>
+      <div className="flex justify-end text-xs mb-5 ">
+        Backend Status: {status}
       </div>
       <Table hoverable className="mb-10">
         <Table.Head>

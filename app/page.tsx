@@ -1,12 +1,12 @@
 "use client";
 import { NavigationBar } from "./components/navbar";
 import { FooterBar } from "./components/footer";
-import { HR } from "flowbite-react";
+import { Banner, Button, HR, Label, TextInput } from "flowbite-react";
 import HomeUpload from "./components/main";
 import HomeTable from "./components/hometable";
 import { InfoCard } from "./components/info";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 
 export default function Home() {
   return (
@@ -15,6 +15,17 @@ export default function Home() {
         <NavigationBar />
         <div className="container mx-auto mt-20 xl:px-28 ">
           <div>
+            <Banner className="mb-10">
+              <div className="flex w-full items-center justify-between border-b border-gray-200 bg-gray-800 p-4 dark:border-gray-600 dark:bg-gray-700">
+                <div className="mx-auto flex w-full shrink-0 items-center sm:w-auto">
+                  <p className="text-white text-2xl">
+                    This Project has been{" "}
+                    <span className="font-bold">PAUSED!</span>
+                  </p>
+                </div>
+              </div>
+            </Banner>
+
             <div className="grid grid-cols-5 gap-x-10">
               <div className="py-0 col-span-3 ">
                 <HomeUpload />

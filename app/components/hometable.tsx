@@ -66,6 +66,7 @@ const HomeTable = () => {
       } catch (error) {
         setStatus("🔴 Offline (Server Down)");
         alert("⚠️ Server is down! Render may be restarting.");
+        console.log(error);
       }
     };
 

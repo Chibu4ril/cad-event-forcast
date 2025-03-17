@@ -6,7 +6,7 @@ import HomeUpload from "./components/main";
 import HomeTable from "./components/hometable";
 import { InfoCard } from "./components/info";
 import Link from "next/link";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 export default function Home() {
   return (

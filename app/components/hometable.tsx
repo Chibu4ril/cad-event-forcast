@@ -16,7 +16,7 @@ const HomeTable = () => {
   const [trainingSets, setTrainingSets] = useState<
     { name: string; filePathURL: string; fileDirectory: string }[]
   >([]);
-  const [status, setStatus] = useState("Checking...");
+  const [status, setStatus] = useState("Reconnecting to backend...");
 
   useEffect(() => {
     setIsClient(true);
@@ -59,13 +59,13 @@ const HomeTable = () => {
         const data = await response.json();
 
         if (data.status === "ok") {
-          setStatus("🟢 Online");
+          setStatus("🟢");
         } else {
-          setStatus("🟠 Restarting...");
+          setStatus("Restarting... 🟠");
         }
       } catch (error) {
-        setStatus("🔴 Offline (Server Down)");
-        alert("⚠️ Server is down! Render may be restarting.");
+        setStatus("Offline (Server Down) 🔴");
+        // alert("⚠️ Server is down! Render may be restarting.");
         console.log(error);
       }
     };
@@ -73,7 +73,7 @@ const HomeTable = () => {
     checkServer();
     const interval = setInterval(checkServer, 10000);
 
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
 
     getFiles();
   }, []);
@@ -92,8 +92,10 @@ const HomeTable = () => {
 
   return (
     <div>
-      <div>Server Status: {status}</div>
-      <Table hoverable>
+      <div className="flex justify-end text-sm mb-5">
+        Backend Status: <span className="text-xs"> {` ${status}`}</span>
+      </div>
+      <Table hoverable className="mb-10">
         <Table.Head>
           <Table.HeadCell className="col-span-2">File name</Table.HeadCell>
           <Table.HeadCell>Url</Table.HeadCell>
@@ -112,10 +114,8 @@ const HomeTable = () => {
                 </Table.Cell>
 
                 <Table.Cell className="truncate ">
-                  {trainingSets.some((training) => training.name === file.name)
-                    ? trainingSets.find(
-                        (training) => training.name === file.name
-                      )?.filePathURL
+                  {files.some((training) => training.name === file.name)
+                    ? files.find((training) => training.name === file.name)?.url
                     : file.url}
                 </Table.Cell>
                 <Table.Cell className="truncate">

@@ -47,18 +47,26 @@ const PredictPro = () => {
     setIsClient(true);
     const getFiles = async () => {
       try {
-        const { normal_files } = await fetchUploadedFiles();
-        // console.log(datasets);
+        const result = await fetchUploadedFiles();
+        // console.log("fetchUploadedFiles result:", result); // Debugging
 
-        const mergedFiles = [...normal_files];
-
-        setFiles(mergedFiles);
-
-        // setUploads(normal_files);
-
-        // setTrainingSets(datasets);
+        if (Array.isArray(result)) {
+          // If API returns an array directly, just use it
+          setFiles(result);
+        } else if (
+          result &&
+          typeof result === "object" &&
+          Array.isArray(result.files)
+        ) {
+          // If API returns { files: [...] }, extract files
+          setFiles(result.files);
+        } else {
+          console.error("Unexpected API response format:", result);
+          setFiles([]); // Default to empty array to avoid breaking UI
+        }
       } catch (error) {
         console.error("Error fetching files:", error);
+        setFiles([]);
       }
     };
     getFiles();
@@ -142,11 +150,12 @@ const PredictPro = () => {
                     <option value="">Select a dataset</option>
                     {files.length > 0 ? (
                       files
-                        .filter(
-                          (file) => file.url && file.url.includes("uploads")
-                        )
-                        .map((file) => (
-                          <option key={file.name} value={file.name}>
+                        .filter((file) => file.url && file.url)
+                        .map((file, index) => (
+                          <option
+                            key={`${file.name}-${index}`}
+                            value={file.name}
+                          >
                             {file.name}
                           </option>
                         ))

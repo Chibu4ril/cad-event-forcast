@@ -20,18 +20,34 @@ const HomeTable = () => {
   useEffect(() => {
     setIsClient(true);
     const getFiles = async () => {
-      const { normal_files, datasets } = await fetchUploadedFiles();
+      // const { normal_files, datasets } = await fetchUploadedFiles();
+      try {
+        const result = await fetchUploadedFiles();
+        // console.log("fetchUploadedFiles result:", result); // Debugging
 
-      const mergedFiles = [...normal_files, ...datasets];
-
-      setFiles(mergedFiles);
-
-      setUploads(normal_files);
-      setTrainingSets(datasets);
+        if (Array.isArray(result)) {
+          // If API returns an array directly, just use it
+          setFiles(result);
+        } else if (
+          result &&
+          typeof result === "object" &&
+          Array.isArray(result.files)
+        ) {
+          // If API returns { files: [...] }, extract files
+          setFiles(result.files);
+        } else {
+          console.error("Unexpected API response format:", result);
+          setFiles([]); // Default to empty array to avoid breaking UI
+        }
+      } catch (error) {
+        console.error("Error fetching files:", error);
+        setFiles([]);
+      }
     };
 
     getFiles();
   }, []);
+
   if (!isClient) return null;
 
   const handleClose = () => {

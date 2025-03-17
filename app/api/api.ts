@@ -6,6 +6,8 @@ export const fetchUploadedFiles = async () => {
       "https://cad-backend-lcaa.onrender.com/api/files"
     );
     const data = await response.json();
+    // console.log(data);
+
     return data.files || [];
   } catch (error) {
     console.error("Error fetching files:", error);

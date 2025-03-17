@@ -16,6 +16,7 @@ const HomeTable = () => {
   const [trainingSets, setTrainingSets] = useState<
     { name: string; filePathURL: string; fileDirectory: string }[]
   >([]);
+  const [status, setStatus] = useState("Checking...");
 
   useEffect(() => {
     setIsClient(true);
@@ -50,6 +51,29 @@ const HomeTable = () => {
       }
     };
 
+    const checkServer = async () => {
+      try {
+        const response = await fetch(
+          "https://cad-backend-lcaa.onrender.com/api/health"
+        );
+        const data = await response.json();
+
+        if (data.status === "ok") {
+          setStatus("🟢 Online");
+        } else {
+          setStatus("🟠 Restarting...");
+        }
+      } catch (error) {
+        setStatus("🔴 Offline (Server Down)");
+        alert("⚠️ Server is down! Render may be restarting.");
+      }
+    };
+
+    checkServer();
+    const interval = setInterval(checkServer, 10000);
+
+    return () => clearInterval(interval);
+
     getFiles();
   }, []);
 
@@ -67,6 +91,7 @@ const HomeTable = () => {
 
   return (
     <div>
+      <div>Server Status: {status}</div>
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell className="col-span-2">File name</Table.HeadCell>

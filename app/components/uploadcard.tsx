@@ -122,9 +122,14 @@ export function UploadCard() {
       )}
       <div>
         <div className="flex items-center gap-2 mb-5">
-          <Checkbox id="accept" onChange={handleCheckbox} checked={checkbox} />
+          <Checkbox
+            id="accept"
+            onChange={handleCheckbox}
+            checked={checkbox}
+            disabled
+          />
           <Label htmlFor="accept" className="flex">
-            <span className="flex items-center text-teal-500 hover:underline font-bold">
+            <span className="flex items-center text-teal-500 hover:underline font-bold line-through">
               Uploading a <u> {` TRAINING DATASET `}</u> ? Check this box!
               <Tooltip
                 content="Files will be added to the list of training data sets when this box is checked"

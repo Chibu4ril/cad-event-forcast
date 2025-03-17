@@ -47,10 +47,10 @@ const PredictPro = () => {
     setIsClient(true);
     const getFiles = async () => {
       try {
-        const { normal_files, datasets } = await fetchUploadedFiles();
+        const { normal_files } = await fetchUploadedFiles();
         // console.log(datasets);
 
-        const mergedFiles = [...normal_files, ...datasets];
+        const mergedFiles = [...normal_files];
 
         setFiles(mergedFiles);
 

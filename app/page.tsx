@@ -15,7 +15,7 @@ export default function Home() {
         <NavigationBar />
         <div className="container mx-auto mt-20 xl:px-28 ">
           <div>
-            <Banner className="mb-10">
+            {/* <Banner className="mb-10">
               <div className="flex w-full items-center justify-between border-b border-gray-200 bg-gray-800 p-4 dark:border-gray-600 dark:bg-gray-700">
                 <div className="mx-auto flex w-full shrink-0 items-center sm:w-auto">
                   <p className="text-white text-2xl">
@@ -24,7 +24,7 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-            </Banner>
+            </Banner> */}
 
             <div className="grid grid-cols-5 gap-x-10">
               <div className="py-0 col-span-3 ">
